@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Star, Cloud, ShieldCheck, PenLine } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const floatingBubbles = [
@@ -13,9 +13,12 @@ const floatingBubbles = [
   { size: 25, x: "40%", y: "10%", delay: 1.2, duration: 5 },
 ];
 
+// aligned to match your screenshot style (top-left, top-right, bottom-left, bottom-right)
 const badges = [
-  { text: "UI/UX Design", icon: "✨", position: "top-1/4 -right-4" },
-  { text: "100% Client Satisfaction", icon: "⭐", position: "bottom-1/3 -left-8" },
+  { text: "100% Client Satisfaction", Icon: Star, pos: "top-14 left-[-28px]" },
+  { text: "An Author", Icon: PenLine, pos: "top-2 right-[-10px]" },
+  { text: "Cloud Fanatic", Icon: Cloud, pos: "bottom-10 left-[-44px]" },
+  { text: "SRE Practitioner", Icon: ShieldCheck, pos: "bottom-14 right-[-34px]" },
 ];
 
 const HeroSection = () => {
@@ -35,9 +38,7 @@ const HeroSection = () => {
             left: bubble.x,
             top: bubble.y,
           }}
-          animate={{
-            y: [0, -12, 0],
-          }}
+          animate={{ y: [0, -12, 0] }}
           transition={{
             duration: bubble.duration,
             repeat: Infinity,
@@ -73,8 +74,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6"
             >
-              Hi, I'm{" "}
-              <span className="gradient-text">Your Name</span>
+              Hi, I'm <span className="gradient-text">Uchit Vyas</span>
             </motion.h1>
 
             <motion.p
@@ -95,12 +95,16 @@ const HeroSection = () => {
             >
               <motion.button
                 className="btn-pill-primary inline-flex items-center gap-2"
-                whileHover={{ scale: 1.03, boxShadow: "0 8px 24px -4px hsl(217 91% 60% / 0.4)" }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0 8px 24px -4px hsl(217 91% 60% / 0.4)",
+                }}
                 whileTap={{ scale: 0.97 }}
               >
                 View My Work
                 <ArrowRight size={18} />
               </motion.button>
+
               <motion.button
                 className="btn-pill-outline"
                 whileHover={{ scale: 1.03 }}
@@ -135,8 +139,8 @@ const HeroSection = () => {
               }}
             />
 
-            {/* Avatar Container */}
-            <div className="relative z-10">
+            {/* Avatar + badges wrapper */}
+            <div className="relative z-10 w-fit">
               <Avatar className="w-64 h-64 md:w-80 md:h-80 border-4 border-white shadow-card">
                 <AvatarImage src="/placeholder.svg" alt="Profile" />
                 <AvatarFallback className="text-6xl bg-gradient-to-br from-primary/20 to-primary/5">
@@ -145,17 +149,27 @@ const HeroSection = () => {
               </Avatar>
 
               {/* Floating Badges */}
-              {badges.map((badge, index) => (
+              {badges.map(({ text, Icon, pos }, index) => (
                 <motion.div
-                  key={index}
-                  className={`absolute ${badge.position} glass-card px-4 py-2 flex items-center gap-2 text-sm font-medium whitespace-nowrap`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + index * 0.2 }}
+                  key={text}
+                  className={[
+                    "absolute",
+                    pos,
+                    "glass-card px-4 py-2",
+                    "flex items-center gap-2 text-sm font-medium whitespace-nowrap",
+                    "rounded-full",
+                    "shadow-[0_10px_30px_rgba(2,8,23,0.10)]",
+                    "border border-white/40",
+                  ].join(" ")}
+                  initial={{ opacity: 0, scale: 0.86, y: 6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ delay: 0.8 + index * 0.12, type: "spring", stiffness: 260, damping: 18 }}
                   whileHover={{ scale: 1.05 }}
                 >
-                  <span>{badge.icon}</span>
-                  {badge.text}
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/70 border border-primary/10">
+                    <Icon className="h-4 w-4 text-primary" />
+                  </span>
+                  <span className="text-foreground/90">{text}</span>
                 </motion.div>
               ))}
             </div>
@@ -165,12 +179,7 @@ const HeroSection = () => {
 
       {/* Wave Separator */}
       <div className="absolute bottom-0 left-0 right-0">
-        <svg
-          viewBox="0 0 1440 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full"
-        >
+        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path
             d="M0 50C240 80 480 20 720 50C960 80 1200 20 1440 50V100H0V50Z"
             fill="hsl(210 100% 98%)"

@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
 @layer base {
   :root {
     --background: 210 100% 99%;
