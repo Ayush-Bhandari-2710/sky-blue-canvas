@@ -1,4 +1,4 @@
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Zap, ArrowRight } from "lucide-react";
 
@@ -9,23 +9,6 @@ type TimelineItem = {
   description: string;
   tags: string[];
 };
-
-const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
-
-const BOLT_D = `
-  M150 40
-  L115 100
-  L165 150
-  L120 215
-  L175 275
-  L110 350
-  L170 420
-  L120 495
-  L180 565
-  L130 640
-  L165 700
-  L140 740
-`;
 
 const timeline: TimelineItem[] = [
   {
@@ -180,7 +163,9 @@ function TimelineCard({
                 </div>
 
                 <h3 className="text-lg md:text-xl font-semibold text-foreground">{it.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2">{it.description}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                  {it.description}
+                </p>
               </div>
 
               <div className="hidden md:flex items-center gap-2 text-primary text-sm font-medium">
@@ -211,20 +196,12 @@ const TrainingSection = () => {
   const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  // Scroll progress for this section only (used for the bolt draw + glow)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.85", "end 0.2"],
-  });
-
-  const pathProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const glowOpacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1]);
-
   return (
-    <section id="training" className="py-24 relative">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+    <section id="training" className="py-24 relative overflow-hidden">
+      {/* Minimal, center-focused background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-primary/7 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[720px] h-[720px] bg-sky-400/8 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10" ref={ref}>
@@ -246,231 +223,17 @@ const TrainingSection = () => {
           </p>
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative grid lg:grid-cols-[220px_1fr_220px] gap-8 lg:gap-12">
-          {/* Left rail */}
-          <div className="relative hidden lg:block">
-            <div className="sticky top-28">
-              <div className="relative h-[760px]">
-                <motion.div
-                  style={{ opacity: glowOpacity }}
-                  className="pointer-events-none absolute -inset-10 rounded-[40px] bg-gradient-to-b from-sky-400/10 via-primary/10 to-transparent blur-2xl"
-                />
+        {/* Center-only timeline (no left/right rails) */}
+        <div className="relative mx-auto max-w-4xl">
+          {/* Subtle vertical guide behind cards (non-SVG) */}
+          <div className="hidden lg:block absolute left-[110px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary/15 to-transparent" />
 
-                <svg
-                  viewBox="0 0 220 760"
-                  className="w-full h-[760px]"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <defs>
-                    <filter id="boltGlowLeft" x="-80%" y="-80%" width="260%" height="260%">
-                      <feGaussianBlur stdDeviation="6" result="blur" />
-                      <feColorMatrix
-                        in="blur"
-                        type="matrix"
-                        values="
-                          1 0 0 0 0
-                          0 1 0 0 0
-                          0 0 2 0 0
-                          0 0 0 1 0"
-                        result="boost"
-                      />
-                      <feMerge>
-                        <feMergeNode in="boost" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-
-                    <filter id="boltBloomLeft" x="-120%" y="-120%" width="320%" height="320%">
-                      <feGaussianBlur stdDeviation="14" result="b" />
-                      <feMerge>
-                        <feMergeNode in="b" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-
-                  <path
-                    d={BOLT_D}
-                    stroke="rgba(59,130,246,0.12)"
-                    strokeWidth="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-
-                  <motion.path
-                    d={BOLT_D}
-                    stroke="rgba(59,130,246,0.28)"
-                    strokeWidth="18"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    filter="url(#boltBloomLeft)"
-                    style={{ pathLength: pathProgress }}
-                  />
-
-                  <motion.path
-                    d={BOLT_D}
-                    stroke="rgba(59,130,246,0.95)"
-                    strokeWidth="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    filter="url(#boltGlowLeft)"
-                    style={{ pathLength: pathProgress }}
-                  />
-
-                  <motion.path
-                    d={BOLT_D}
-                    stroke="rgba(34,211,238,0.95)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      pathLength: pathProgress,
-                      opacity: useTransform(scrollYProgress, [0, 0.15, 1], [0, 1, 1]),
-                    }}
-                  />
-
-                  <motion.path
-                    d={BOLT_D}
-                    stroke="rgba(255,255,255,0.75)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      pathLength: pathProgress,
-                      opacity: useTransform(scrollYProgress, (v) => (v > 0.02 ? 0.35 : 0)),
-                    }}
-                    animate={{ opacity: [0.18, 0.42, 0.22] }}
-                    transition={{ duration: 0.9, repeat: Infinity, repeatType: "mirror" }}
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Items (center column) */}
           <div className="space-y-6">
             {timeline.map((it, idx) => (
               <TimelineCard key={it.id} it={it} idx={idx} isInViewSection={isInView} />
             ))}
           </div>
-
-          {/* Right rail */}
-          <div className="relative hidden lg:block">
-            <div className="sticky top-28">
-              <div className="relative h-[760px]">
-                <motion.div
-                  style={{ opacity: glowOpacity }}
-                  className="pointer-events-none absolute -inset-10 rounded-[40px] bg-gradient-to-b from-sky-400/10 via-primary/10 to-transparent blur-2xl"
-                />
-
-                <svg
-                  viewBox="0 0 220 760"
-                  className="w-full h-[760px]"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <defs>
-                    <filter id="boltGlowRight" x="-80%" y="-80%" width="260%" height="260%">
-                      <feGaussianBlur stdDeviation="6" result="blur" />
-                      <feColorMatrix
-                        in="blur"
-                        type="matrix"
-                        values="
-                          1 0 0 0 0
-                          0 1 0 0 0
-                          0 0 2 0 0
-                          0 0 0 1 0"
-                        result="boost"
-                      />
-                      <feMerge>
-                        <feMergeNode in="boost" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-
-                    <filter id="boltBloomRight" x="-120%" y="-120%" width="320%" height="320%">
-                      <feGaussianBlur stdDeviation="14" result="b" />
-                      <feMerge>
-                        <feMergeNode in="b" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-
-                  <g transform="translate(220 0) scale(-1 1)">
-                    <path
-                      d={BOLT_D}
-                      stroke="rgba(59,130,246,0.12)"
-                      strokeWidth="10"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-
-                    <motion.path
-                      d={BOLT_D}
-                      stroke="rgba(59,130,246,0.28)"
-                      strokeWidth="18"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      filter="url(#boltBloomRight)"
-                      style={{ pathLength: pathProgress }}
-                    />
-
-                    <motion.path
-                      d={BOLT_D}
-                      stroke="rgba(59,130,246,0.95)"
-                      strokeWidth="10"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      filter="url(#boltGlowRight)"
-                      style={{ pathLength: pathProgress }}
-                    />
-
-                    <motion.path
-                      d={BOLT_D}
-                      stroke="rgba(34,211,238,0.95)"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{
-                        pathLength: pathProgress,
-                        opacity: useTransform(scrollYProgress, [0, 0.15, 1], [0, 1, 1]),
-                      }}
-                    />
-
-                    <motion.path
-                      d={BOLT_D}
-                      stroke="rgba(255,255,255,0.75)"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{
-                        pathLength: pathProgress,
-                        opacity: useTransform(scrollYProgress, (v) => (v > 0.02 ? 0.35 : 0)),
-                      }}
-                      animate={{ opacity: [0.18, 0.42, 0.22] }}
-                      transition={{ duration: 0.9, repeat: Infinity, repeatType: "mirror" }}
-                    />
-                  </g>
-                </svg>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-
-      {/* Wave Separator */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path
-            d="M0 35C180 55 360 20 540 40C720 60 900 30 1080 45C1260 60 1380 40 1440 50V80H0V35Z"
-            fill="hsl(210 100% 98%)"
-          />
-        </svg>
       </div>
     </section>
   );
