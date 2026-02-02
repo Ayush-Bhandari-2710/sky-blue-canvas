@@ -1,6 +1,6 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Calendar, BookOpen } from "lucide-react";
+import { Calendar, BookOpen, ExternalLink } from "lucide-react";
 
 const publications = [
   {
@@ -87,32 +87,31 @@ const publications = [
   },
 ];
 
-type Publication = (typeof publications)[number];
+type Publication = (typeof publications)[number] & {
+  link?: string;
+};
 
 const PublicationCard = ({ publication }: { publication: Publication }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  const hasLink = Boolean(publication.link);
+
   return (
     <motion.div
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{
-        y: -8,
-        scale: 1.02,
-      }}
-      transition={{
-        duration: 0.4,
-        ease: [0.23, 1, 0.32, 1],
-      }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
       className="flex-shrink-0 w-96 bg-white rounded-3xl overflow-hidden group cursor-pointer relative"
       style={{
         boxShadow: isHovered
           ? "0 25px 50px -12px rgba(59, 130, 246, 0.25), 0 0 0 1px rgba(59, 130, 246, 0.1)"
           : "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)",
       }}
+      role="article"
+      aria-label={publication.title}
     >
-      {/* Image Section or Gradient Fallback */}
       <div className="relative h-44 overflow-hidden bg-slate-100">
         {publication.image && !imageError ? (
           <>
@@ -124,36 +123,25 @@ const PublicationCard = ({ publication }: { publication: Publication }) => {
               transition={{ duration: 0.6, ease: "easeOut" }}
               onError={() => setImageError(true)}
             />
-
-            {/* Image Overlay Gradient */}
             <div
               className={`absolute inset-0 bg-gradient-to-br ${publication.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500`}
             />
-
-            {/* Darkening overlay for better text contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
           </>
         ) : (
           <>
-            {/* Fallback Gradient Background */}
             <motion.div
               className={`absolute inset-0 bg-gradient-to-br ${publication.gradient}`}
               animate={
                 isHovered
-                  ? {
-                      backgroundPosition: ["0% 0%", "100% 100%"],
-                    }
+                  ? { backgroundPosition: ["0% 0%", "100% 100%"] }
                   : {}
               }
               transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
               style={{ backgroundSize: "200% 200%" }}
             />
-
-            {/* Decorative Circles */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-8 -translate-y-8" />
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full blur-3xl transform -translate-x-12 translate-y-12" />
-
-            {/* Icon */}
             <motion.div
               className="absolute inset-0 flex items-center justify-center"
               animate={isHovered ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
@@ -161,8 +149,6 @@ const PublicationCard = ({ publication }: { publication: Publication }) => {
             >
               <BookOpen className="w-16 h-16 text-white/40 stroke-[1.5]" />
             </motion.div>
-
-            {/* Pattern Overlay */}
             <div className="absolute inset-0 opacity-10">
               <svg width="100%" height="100%">
                 <pattern
@@ -181,7 +167,6 @@ const PublicationCard = ({ publication }: { publication: Publication }) => {
           </>
         )}
 
-        {/* Shine Effect */}
         <motion.div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none z-20"
           initial={false}
@@ -201,12 +186,9 @@ const PublicationCard = ({ publication }: { publication: Publication }) => {
         />
       </div>
 
-      {/* Gradient Border Effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-transparent to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl" />
 
-      {/* Content Container */}
       <div className="relative z-10 p-6">
-        {/* Tags Section */}
         <div className="flex flex-wrap gap-2 mb-4">
           {publication.tag.split(" ").map((tag, index) => (
             <motion.span
@@ -220,20 +202,41 @@ const PublicationCard = ({ publication }: { publication: Publication }) => {
           ))}
         </div>
 
-        {/* Title */}
         <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 leading-tight group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-blue-800 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
           {publication.title}
         </h3>
 
-        {/* Description */}
-        <p className="text-sm text-slate-600 mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-slate-600 mb-5 line-clamp-2 leading-relaxed">
           {publication.description}
         </p>
 
-        {/* Bottom Section */}
-        <div className="flex items-center gap-2 text-slate-500">
-          <Calendar size={14} strokeWidth={2} />
-          <span className="text-sm font-medium">{publication.year}</span>
+        <div className="flex items-center justify-between">
+          <motion.a
+            href={hasLink ? publication.link : "#"}
+            onClick={(e) => {
+              if (!hasLink) e.preventDefault();
+            }}
+            target={hasLink ? "_blank" : undefined}
+            rel={hasLink ? "noreferrer noopener" : undefined}
+            aria-disabled={!hasLink}
+            className={[
+              "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold",
+              "border transition-all duration-300",
+              hasLink
+                ? "border-blue-200 bg-white text-blue-700 hover:bg-blue-50 hover:border-blue-300"
+                : "border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed",
+            ].join(" ")}
+            whileHover={hasLink ? { scale: 1.03 } : {}}
+            whileTap={hasLink ? { scale: 0.98 } : {}}
+          >
+            <ExternalLink size={14} strokeWidth={2} />
+            Open
+          </motion.a>
+
+          <div className="flex items-center gap-2 text-slate-500">
+            <Calendar size={14} strokeWidth={2} />
+            <span className="text-sm font-medium">{publication.year}</span>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -241,7 +244,6 @@ const PublicationCard = ({ publication }: { publication: Publication }) => {
 };
 
 const clampNegativeModulo = (value: number, modulo: number) => {
-  // Keeps value in range [-modulo, 0)
   if (modulo === 0) return 0;
   let v = value % modulo;
   if (v > 0) v -= modulo;
@@ -249,7 +251,7 @@ const clampNegativeModulo = (value: number, modulo: number) => {
 };
 
 const PublicationsMarquee = ({
-  speed = 40, // seconds for one full set to pass
+  speed = 40,
   pauseOnHover = true,
 }: {
   speed?: number;
@@ -257,15 +259,11 @@ const PublicationsMarquee = ({
 }) => {
   const [isPaused, setIsPaused] = useState(false);
 
-  // Duplicate list for seamless visual loop
   const duplicatedPublications = useMemo(() => [...publications, ...publications], []);
 
-  // Card sizing based on your Tailwind classes
   const CARD_WIDTH = 384; // w-96
   const GAP = 24; // gap-6
   const STEP = CARD_WIDTH + GAP;
-
-  // Distance for one full set
   const loopDistance = publications.length * STEP;
 
   const x = useMotionValue(0);
@@ -281,11 +279,9 @@ const PublicationsMarquee = ({
 
     stop();
 
-    // Ensure x is always within a stable range so it never jumps
     const current = clampNegativeModulo(x.get(), loopDistance);
     x.set(current);
 
-    // Remaining distance to reach the end of this cycle
     const remaining = Math.abs(-loopDistance - current);
     const duration = (remaining / loopDistance) * speed;
 
@@ -293,7 +289,6 @@ const PublicationsMarquee = ({
       duration: Math.max(0.001, duration),
       ease: "linear",
       onComplete: () => {
-        // Hard reset back to 0, then continue
         x.set(0);
         start();
       },
@@ -301,12 +296,8 @@ const PublicationsMarquee = ({
   };
 
   useEffect(() => {
-    // Start on mount
     start();
-
-    return () => {
-      stop();
-    };
+    return () => stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loopDistance, speed]);
 
@@ -316,32 +307,26 @@ const PublicationsMarquee = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaused, pauseOnHover]);
 
-  // Optional: allow wheel to "nudge" the marquee without restarting
   const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    // Convert vertical wheel into horizontal movement
     const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
     if (Math.abs(delta) < 0.5) return;
 
     e.preventDefault();
 
-    // Pause while user interacts
     if (pauseOnHover) setIsPaused(true);
 
-    // Move content based on wheel direction
     const next = x.get() - delta;
     x.set(clampNegativeModulo(next, loopDistance));
   };
 
   return (
     <section className="py-20 bg-gradient-to-b from-white via-blue-50/30 to-white relative overflow-hidden">
-      {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -right-20 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-blue-50/60 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -349,6 +334,7 @@ const PublicationsMarquee = ({
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
+          {/* Same style for both lines */}
           <motion.div
             className="inline-flex items-center gap-3 mb-4"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -356,24 +342,7 @@ const PublicationsMarquee = ({
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <motion.span
-              className="w-12 h-px bg-gradient-to-r from-transparent via-blue-400 to-blue-400"
-              initial={{ width: 0 }}
-              whileInView={{ width: 48 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            />
-            <span className="text-blue-600 font-bold text-sm uppercase tracking-[0.2em] flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              Publications
-            </span>
-            <motion.span
-              className="w-12 h-px bg-gradient-to-r from-blue-400 to-transparent"
-              initial={{ width: 0 }}
-              whileInView={{ width: 48 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            />
+            
           </motion.div>
 
           <motion.h2
@@ -384,7 +353,7 @@ const PublicationsMarquee = ({
             transition={{ delay: 0.3, duration: 0.6 }}
           >
             <span className="bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 bg-clip-text text-transparent">
-              Publications
+              Written Works - Publications
             </span>
             <motion.div
               className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full"
@@ -402,21 +371,18 @@ const PublicationsMarquee = ({
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            Insights and knowledge shared across leading publications
+            A selection of writing and published work
           </motion.p>
         </motion.div>
 
-        {/* Scrolling Marquee Container */}
         <div
           className="relative"
           onMouseEnter={() => pauseOnHover && setIsPaused(true)}
           onMouseLeave={() => pauseOnHover && setIsPaused(false)}
         >
-          {/* Gradient Fade Edges */}
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-          {/* Track */}
           <div
             className="overflow-hidden py-4"
             onWheel={onWheel}
@@ -436,7 +402,6 @@ const PublicationsMarquee = ({
             </motion.div>
           </div>
 
-          {/* Scroll Hint */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: isPaused ? 0 : 0.6 }}
@@ -449,14 +414,8 @@ const PublicationsMarquee = ({
         </div>
       </div>
 
-      {/* Bottom Decorative Wave */}
       <div className="absolute bottom-0 left-0 right-0 opacity-30">
-        <svg
-          viewBox="0 0 1440 60"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full"
-        >
+        <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path
             d="M0 30C240 10 480 50 720 30C960 10 1200 45 1440 25V60H0V30Z"
             fill="url(#wave-gradient)"
