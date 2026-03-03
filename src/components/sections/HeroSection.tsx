@@ -376,7 +376,7 @@ const HeroSection = () => {
           </div>
 
           {/* ── IMAGE COL ── */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, marginTop: 20}}>
             <motion.div
               ref={containerRef}
               initial={{ opacity: 0, x: isDesktop ? 36 : 0, y: isMobile ? -16 : 0 }}
