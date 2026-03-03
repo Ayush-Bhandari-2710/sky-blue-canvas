@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Zap, ArrowRight, BookOpen } from "lucide-react";
 
 const timeline = [
@@ -77,58 +77,137 @@ const timeline = [
   },
 ];
 
-/* ── Very subtle blue noise on white ── */
 function BlueNoiseCanvas() {
   const ref = useRef(null);
-
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
-    const W = (canvas.width  = canvas.offsetWidth);
+    const W = (canvas.width = canvas.offsetWidth);
     const H = (canvas.height = canvas.offsetHeight);
     const ctx = canvas.getContext("2d");
     const img = ctx.createImageData(W, H);
-    const d   = img.data;
-
+    const d = img.data;
     for (let i = 0; i < d.length; i += 4) {
       const r = Math.random();
       if (r > 0.991) {
-        // faint blue speck
-        d[i]     = 80 + Math.random() * 40;
+        d[i] = 80 + Math.random() * 40;
         d[i + 1] = 120 + Math.random() * 40;
         d[i + 2] = 220 + Math.random() * 35;
         d[i + 3] = 18 + Math.random() * 22;
       } else if (r > 0.975) {
-        // even lighter blue-grey grain
-        d[i]     = 160 + Math.random() * 30;
+        d[i] = 160 + Math.random() * 30;
         d[i + 1] = 175 + Math.random() * 30;
         d[i + 2] = 220 + Math.random() * 30;
         d[i + 3] = 6 + Math.random() * 9;
       }
-      // else fully transparent — keeps bg clean white
     }
     ctx.putImageData(img, 0, 0);
   }, []);
-
   return (
     <canvas
       ref={ref}
       style={{
         position: "absolute", inset: 0,
         width: "100%", height: "100%",
-        pointerEvents: "none",
-        opacity: 0.9,
-        zIndex: 0,
+        pointerEvents: "none", opacity: 0.9, zIndex: 0,
       }}
     />
   );
 }
 
-/* ── Card ── */
-function TimelineCard({ it, idx, isInViewSection }) {
+/* ── Mobile card: full-width, date as inline badge ── */
+function MobileCard({ it, idx, isInViewSection }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={isInViewSection ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={{ duration: 0.5, delay: idx * 0.055, ease: [0.16, 1, 0.3, 1] }}
+      style={{ marginBottom: 12 }}
+    >
+      <div style={{
+        borderRadius: 18,
+        padding: "18px 18px 20px",
+        position: "relative",
+        overflow: "hidden",
+        background: "white",
+        border: `1px solid ${it.accent}22`,
+        boxShadow: `0 4px 20px rgba(60,80,180,0.07)`,
+      }}>
+        {/* Top accent bar */}
+        <div style={{
+          position: "absolute", top: 0, left: "8%", right: "8%", height: 1.5,
+          background: `linear-gradient(90deg, transparent, ${it.accent}55, transparent)`,
+          borderRadius: 1, pointerEvents: "none",
+        }} />
+        {/* Left stripe */}
+        <div style={{
+          position: "absolute", top: "12%", left: 0,
+          width: 2.5, height: "76%", borderRadius: 2,
+          background: `linear-gradient(to bottom, transparent, ${it.accent}70, transparent)`,
+        }} />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {/* Date badge replaces timeline */}
+          <div style={{
+            display: "inline-flex", alignItems: "center",
+            padding: "3px 10px", borderRadius: 100,
+            background: `${it.accent}12`,
+            border: `1px solid ${it.accent}28`,
+            marginBottom: 10,
+          }}>
+            <span style={{
+              fontSize: 10, fontWeight: 800, letterSpacing: "0.1em",
+              textTransform: "uppercase", color: it.accent,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>
+              {it.date}
+            </span>
+          </div>
+
+          <h3 style={{
+            margin: "0 0 8px",
+            fontSize: 15, fontWeight: 700,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            letterSpacing: "-0.015em", lineHeight: 1.35,
+            color: "#111827",
+          }}>
+            {it.title}
+          </h3>
+
+          <p style={{
+            margin: "0 0 12px",
+            fontSize: 13, lineHeight: 1.7,
+            color: "#6b7a99",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 400,
+          }}>
+            {it.description}
+          </p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+            {it.tags.map((tag) => (
+              <span key={tag} style={{
+                fontSize: 10.5, fontWeight: 500,
+                padding: "3px 10px", borderRadius: 100,
+                background: `${it.accent}08`,
+                border: `1px solid ${it.accent}20`,
+                color: "#4a5580",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── Desktop card: original timeline layout ── */
+function DesktopCard({ it, idx, isInViewSection }) {
   const cardRef = useRef(null);
   const [hov, setHov] = useState(false);
-
   const active = useInView(cardRef, { margin: "-30% 0px -42% 0px" });
 
   return (
@@ -174,7 +253,7 @@ function TimelineCard({ it, idx, isInViewSection }) {
         </div>
       </div>
 
-      {/* Date */}
+      {/* Date label */}
       <div style={{
         flexShrink: 0, width: 90, paddingTop: 27, paddingRight: 18,
         display: "flex", justifyContent: "flex-end",
@@ -212,18 +291,15 @@ function TimelineCard({ it, idx, isInViewSection }) {
           transition: "border-color 0.4s, box-shadow 0.4s",
         }}
       >
-        {/* Top accent line */}
         <div style={{
           position: "absolute", top: 0, left: "10%", right: "10%", height: 1.5,
           background: active
             ? `linear-gradient(90deg, transparent, ${it.accent}60, transparent)`
             : "transparent",
           transition: "background 0.4s",
-          pointerEvents: "none",
-          borderRadius: 1,
+          pointerEvents: "none", borderRadius: 1,
         }} />
 
-        {/* Left stripe */}
         <motion.div
           animate={{ opacity: active ? 1 : 0, scaleY: active ? 1 : 0.3 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -235,7 +311,6 @@ function TimelineCard({ it, idx, isInViewSection }) {
           }}
         />
 
-        {/* Shimmer on hover */}
         <AnimatePresence>
           {hov && active && (
             <motion.div
@@ -253,7 +328,6 @@ function TimelineCard({ it, idx, isInViewSection }) {
         </AnimatePresence>
 
         <div style={{ position: "relative", zIndex: 1 }}>
-          {/* Badge row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 5,
@@ -284,33 +358,28 @@ function TimelineCard({ it, idx, isInViewSection }) {
             </motion.div>
           </div>
 
-          {/* Title */}
           <h3 style={{
             margin: "0 0 8px",
             fontSize: "clamp(14.5px, 1.8vw, 17px)",
             fontWeight: 700,
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            letterSpacing: "-0.015em",
-            lineHeight: 1.3,
+            letterSpacing: "-0.015em", lineHeight: 1.3,
             color: active ? "#111827" : "#9aa5c8",
             transition: "color 0.4s",
           }}>
             {it.title}
           </h3>
 
-          {/* Description */}
           <p style={{
             margin: "0 0 14px",
             fontSize: 13.5, lineHeight: 1.75,
             color: active ? "#6b7a99" : "#c0cbe8",
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 400,
-            transition: "color 0.4s",
+            fontWeight: 400, transition: "color 0.4s",
           }}>
             {it.description}
           </p>
 
-          {/* Tags */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {it.tags.map((tag) => (
               <span key={tag} style={{
@@ -332,17 +401,28 @@ function TimelineCard({ it, idx, isInViewSection }) {
   );
 }
 
-/* ── Main ── */
 const TrainingSection = () => {
-  const ref      = useRef(null);
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  // SSR-safe: read window immediately so first render is already correct
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 640
+  );
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <section
       id="training"
       style={{
         position: "relative",
-        padding: "96px 0 120px",
+        padding: isMobile ? "64px 0 80px" : "96px 0 120px",
         background: "#ffffff",
         overflow: "hidden",
         fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
@@ -352,7 +432,6 @@ const TrainingSection = () => {
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
       `}</style>
 
-      {/* Very faint blue radial tint — keeps it white but not sterile */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
         background: `
@@ -361,20 +440,26 @@ const TrainingSection = () => {
         `,
       }} />
 
-      {/* Blue noise grain */}
       <BlueNoiseCanvas />
 
       <div
         ref={ref}
-        style={{ maxWidth: 840, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 2 }}
+        style={{
+          maxWidth: 840,
+          width: "100%",
+          margin: "0 auto",
+          padding: isMobile ? "0 16px" : "0 24px",
+          position: "relative",
+          zIndex: 2,
+          boxSizing: "border-box",
+        }}
       >
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          style={{ textAlign: "center", marginBottom: 64 }}
+          style={{ textAlign: "center", marginBottom: isMobile ? 36 : 64 }}
         >
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
             <div style={{
@@ -396,11 +481,11 @@ const TrainingSection = () => {
 
           <h2 style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: "clamp(28px, 4vw, 48px)",
+            fontSize: isMobile ? "clamp(24px, 7vw, 32px)" : "clamp(28px, 4vw, 48px)",
             fontWeight: 800,
             letterSpacing: "-0.025em",
             lineHeight: 1.1,
-            margin: "0 0 14px",
+            margin: "0 0 12px",
             color: "#111827",
           }}>
             Training{" "}
@@ -415,33 +500,39 @@ const TrainingSection = () => {
           </h2>
 
           <p style={{
-            fontSize: 14, lineHeight: 1.75,
+            fontSize: isMobile ? 13 : 14,
+            lineHeight: 1.75,
             color: "#9aa5c8",
-            maxWidth: 480, margin: "0 auto",
+            maxWidth: 440,
+            margin: "0 auto",
             fontWeight: 400,
+            padding: isMobile ? "0 4px" : 0,
           }}>
             Hands-on training programs designed to level up your skills
             and accelerate your career in modern infrastructure engineering.
           </p>
         </motion.div>
 
-        {/* Timeline */}
+        {/* Card list */}
         <div style={{ position: "relative" }}>
-
-          {/* Guide line */}
-          <div style={{
-            position: "absolute",
-            left: 59, top: 0, bottom: 0, width: 1,
-            background: "linear-gradient(to bottom, transparent, rgba(99,130,255,0.18) 8%, rgba(99,130,255,0.14) 50%, rgba(99,130,255,0.08) 92%, transparent)",
-            pointerEvents: "none",
-          }} />
-
-
+          {/* Vertical guide line — desktop only */}
+          {!isMobile && (
+            <div style={{
+              position: "absolute",
+              left: 59, top: 0, bottom: 0, width: 1,
+              background: "linear-gradient(to bottom, transparent, rgba(99,130,255,0.18) 8%, rgba(99,130,255,0.14) 50%, rgba(99,130,255,0.08) 92%, transparent)",
+              pointerEvents: "none",
+            }} />
+          )}
 
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {timeline.map((it, idx) => (
-              <TimelineCard key={it.id} it={it} idx={idx} isInViewSection={isInView} />
-            ))}
+            {timeline.map((it, idx) =>
+              isMobile ? (
+                <MobileCard key={it.id} it={it} idx={idx} isInViewSection={isInView} />
+              ) : (
+                <DesktopCard key={it.id} it={it} idx={idx} isInViewSection={isInView} />
+              )
+            )}
           </div>
         </div>
       </div>

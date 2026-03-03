@@ -479,14 +479,32 @@ export default function TalksSection() {
           transition={{ delay: 0.35, duration: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-4 rounded-full border border-black/5 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md px-8 py-4 shadow-[0_10px_30px_rgba(2,6,23,0.06)]">
-            <Globe className="w-6 h-6 text-primary" />
-            <span className="text-base md:text-lg font-semibold text-foreground">{stats.countries}+ Countries</span>
-            <span className="text-muted-foreground">•</span>
-            <span className="text-base md:text-lg font-semibold text-foreground">{stats.events}+ Talks</span>
-            <span className="text-muted-foreground">•</span>
-            <span className="text-base md:text-lg font-semibold text-foreground">{stats.regions} Regions</span>
-          </div>
+<div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 
+                rounded-2xl md:rounded-full 
+                border border-black/5 dark:border-white/10 
+                bg-white/60 dark:bg-white/5 backdrop-blur-md 
+                px-5 md:px-8 py-3 md:py-4 
+                shadow-[0_10px_30px_rgba(2,6,23,0.06)] 
+                max-w-full">
+
+  <Globe className="w-5 h-5 md:w-6 md:h-6 text-primary shrink-0" />
+
+  <span className="text-sm md:text-base font-semibold text-foreground whitespace-nowrap">
+    {stats.countries}+ Countries
+  </span>
+
+  <span className="hidden sm:inline text-muted-foreground">•</span>
+
+  <span className="text-sm md:text-base font-semibold text-foreground whitespace-nowrap">
+    {stats.events}+ Talks
+  </span>
+
+  <span className="hidden sm:inline text-muted-foreground">•</span>
+
+  <span className="text-sm md:text-base font-semibold text-foreground whitespace-nowrap">
+    {stats.regions} Regions
+  </span>
+</div>
         </motion.div>
       </div>
 

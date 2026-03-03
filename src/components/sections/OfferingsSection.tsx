@@ -160,34 +160,26 @@ const fadeUp: Variants = {
 
 const OfferingsSection = () => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, margin: "-120px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
-  // MULTI-OPEN Key Offerings
   const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
-
-  // Focus Areas expand state (each card can open independently)
   const [focusExpanded, setFocusExpanded] = useState<Record<string, boolean>>({});
 
-  const toggleFocus = (id: string) => {
+  const toggleFocus = (id: string) =>
     setFocusExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
 
-  const toggleOpen = (id: string) => {
+  const toggleOpen = (id: string) =>
     setOpenIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
-  };
-
-  // Optional hook you can use later
-  const allOpen = useMemo(() => openIds.size === keyOfferings.length, [openIds]);
 
   return (
     <section
       id="offerings"
-      className="relative py-24 md:py-28 bg-gradient-to-b from-secondary/30 via-transparent to-transparent overflow-hidden"
+      className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-b from-secondary/30 via-transparent to-transparent overflow-hidden"
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
@@ -195,30 +187,45 @@ const OfferingsSection = () => {
         <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(to_right,rgba(15,23,42,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.06)_1px,transparent_1px)] [background-size:36px_36px]" />
       </div>
 
-      <div className="container mx-auto px-6 relative" ref={ref}>
-        {/* Header */}
-        <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} className="text-center mb-14 md:mb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" ref={ref}>
+
+        {/* ── Header ── */}
+        <motion.div
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="text-center mb-10 sm:mb-14 md:mb-16"
+        >
           <motion.div
             variants={fadeUp}
             custom={0}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/15 bg-white/50 dark:bg-white/5 backdrop-blur-md shadow-sm"
           >
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-primary font-medium text-xs uppercase tracking-wider">Key Offerings</span>
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+            <span className="text-primary font-medium text-[10px] sm:text-xs uppercase tracking-wider">
+              Key Offerings
+            </span>
           </motion.div>
 
-          <motion.h2 variants={fadeUp} custom={0.08} className="text-3xl md:text-5xl font-bold mt-4 gradient-text">
+          <motion.h2
+            variants={fadeUp}
+            custom={0.08}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 gradient-text leading-tight px-2"
+          >
             Architecture, DevSecOps, and Rapid Delivery
           </motion.h2>
 
-          <motion.p variants={fadeUp} custom={0.16} className="text-muted-foreground mt-4 max-w-3xl mx-auto leading-relaxed">
-            By wide infrastructure experience, DevSecOps expertise, thorough understanding of cutting edge technologies,
-            and market intelligence I deliver quality to customers with rapid speed.
+          <motion.p
+            variants={fadeUp}
+            custom={0.16}
+            className="text-muted-foreground mt-3 sm:mt-4 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base px-2"
+          >
+            By wide infrastructure experience, DevSecOps expertise, thorough understanding of cutting edge
+            technologies, and market intelligence I deliver quality to customers with rapid speed.
           </motion.p>
         </motion.div>
 
-        {/* Offerings Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* ── Offerings Grid — 1 col → 2 col (sm) → 4 col (lg) ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {keyOfferings.map((item, idx) => {
             const Icon = item.icon;
             const isOpen = openIds.has(item.id);
@@ -229,35 +236,36 @@ const OfferingsSection = () => {
                 initial={{ opacity: 0, y: 14 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
                 transition={{ duration: 0.5, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -8, transition: { duration: 0.18 } }}
-                className={[
-                  "glass-card p-8 rounded-3xl group glow-on-hover relative overflow-hidden",
-                  "ring-1 ring-black/5 dark:ring-white/10",
-                ].join(" ")}
+                whileHover={{ y: -6, transition: { duration: 0.18 } }}
+                className="glass-card p-6 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl group glow-on-hover relative overflow-hidden ring-1 ring-black/5 dark:ring-white/10"
               >
                 {/* Hover wash */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/6 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 {/* Icon */}
                 <motion.div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 relative z-10 shadow-sm`}
+                  className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-5 sm:mb-6 relative z-10 shadow-sm`}
                   whileHover={{ rotate: 6, scale: 1.06 }}
                   transition={{ type: "spring", stiffness: 320, damping: 18 }}
                 >
-                  <Icon className="w-7 h-7 text-white" />
+                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                 </motion.div>
 
                 {/* Content */}
                 <div className="relative z-10">
-                  <h3 className="text-xl font-semibold text-foreground mb-3">{item.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-5">{item.description}</p>
+                  <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-4 sm:mb-5">
+                    {item.description}
+                  </p>
 
                   {/* Chips */}
-                  <div className="flex flex-wrap gap-2 mb-5">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-5">
                     {item.chips.map((chip) => (
                       <span
                         key={chip}
-                        className="text-[11px] px-2.5 py-1 rounded-full border border-primary/15 bg-white/60 dark:bg-white/5 backdrop-blur-md text-foreground/80"
+                        className="text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-primary/15 bg-white/60 dark:bg-white/5 backdrop-blur-md text-foreground/80 whitespace-nowrap"
                       >
                         {chip}
                       </span>
@@ -268,34 +276,36 @@ const OfferingsSection = () => {
                   <button
                     type="button"
                     onClick={() => toggleOpen(item.id)}
-                    className="inline-flex items-center gap-2 text-primary text-sm font-medium"
+                    className="inline-flex items-center gap-1.5 text-primary text-sm font-medium"
                     aria-expanded={isOpen}
                   >
                     {isOpen ? "Hide details" : "View details"}
                     <motion.span animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.18 }}>
-                      <ArrowRight size={16} />
+                      <ArrowRight size={15} />
                     </motion.span>
                   </button>
 
-                  {/* Details */}
+                  {/* Details — animated height, no y-shift glitch */}
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: 0.18, ease: "easeOut" }}
-                        className="mt-5"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.22, ease: "easeOut" }}
+                        className="overflow-hidden"
                       >
-                        <div className="h-px w-full bg-gradient-to-r from-primary/25 via-primary/10 to-transparent mb-4" />
-                        <ul className="space-y-2.5 text-sm text-muted-foreground">
-                          {item.details.map((d) => (
-                            <li key={d} className="flex gap-2">
-                              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/70 shrink-0" />
-                              <span className="leading-relaxed">{d}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        <div className="mt-4 sm:mt-5">
+                          <div className="h-px w-full bg-gradient-to-r from-primary/25 via-primary/10 to-transparent mb-3 sm:mb-4" />
+                          <ul className="space-y-2 sm:space-y-2.5 text-sm text-muted-foreground">
+                            {item.details.map((d) => (
+                              <li key={d} className="flex gap-2">
+                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/70 shrink-0" />
+                                <span className="leading-relaxed">{d}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -314,19 +324,26 @@ const OfferingsSection = () => {
           })}
         </div>
 
-        {/* Focus Areas */}
-        <div className="mt-14 md:mt-16">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
+        {/* ── Focus Areas ── */}
+        <div className="mt-12 sm:mt-14 md:mt-16">
+
+          {/* Sub-header */}
+          <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-end md:justify-between mb-6 sm:mb-8">
             <div>
-              <span className="text-primary font-medium text-sm uppercase tracking-wider">Focus Areas</span>
-              <h3 className="text-2xl md:text-3xl font-bold mt-2">Cloud-first systems, programmable infrastructure</h3>
+              <span className="text-primary font-medium text-xs sm:text-sm uppercase tracking-wider">
+                Focus Areas
+              </span>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mt-1 sm:mt-2 leading-snug max-w-xs sm:max-w-none">
+                Cloud-first systems, programmable infrastructure
+              </h3>
             </div>
-            <p className="text-muted-foreground max-w-xl leading-relaxed">
+            <p className="text-muted-foreground text-sm sm:text-base max-w-xl leading-relaxed">
               My passion for distributed computing, scalable architecture, and programmable infrastructure led me to cloud.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6">
+          {/* Focus cards — 1 col → 2 col (lg) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
             {focusAreas.map((a, idx) => {
               const Icon = a.icon;
               const isOpen = !!focusExpanded[a.id];
@@ -337,13 +354,13 @@ const OfferingsSection = () => {
                   initial={{ opacity: 0, y: 14 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
                   transition={{ duration: 0.5, delay: 0.05 + idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -6 }}
-                  className="relative overflow-hidden rounded-3xl border border-black/5 dark:border-white/10 bg-white/55 dark:bg-white/5 backdrop-blur-md p-7 shadow-[0_10px_30px_rgba(2,6,23,0.06)]"
+                  whileHover={{ y: -4 }}
+                  className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-black/5 dark:border-white/10 bg-white/55 dark:bg-white/5 backdrop-blur-md p-5 sm:p-6 lg:p-7 shadow-[0_10px_30px_rgba(2,6,23,0.06)]"
                 >
-                  {/* Soft tinted background */}
+                  {/* Soft tinted bg */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${a.color} opacity-[0.08]`} />
 
-                  {/* Magical burst when toggling */}
+                  {/* Burst */}
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
@@ -357,125 +374,107 @@ const OfferingsSection = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* Stable layout: header / body / footer */}
-                  <div className="relative grid h-[230px] grid-rows-[auto_1fr_auto]">
-                    {/* Header */}
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-4">
+                  {/* Card — fully fluid height */}
+                  <div className="relative flex flex-col gap-4">
+
+                    {/* Header row */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
                         <div
-                          className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${a.color} flex items-center justify-center shadow-sm`}
+                          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br ${a.color} flex items-center justify-center shadow-sm shrink-0`}
                         >
-                          <Icon className="w-6 h-6 text-white" />
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <AnimatePresence mode="wait" initial={false}>
                             {!isOpen ? (
                               <motion.div
                                 key="frontTitle"
-                                initial={{ opacity: 0, y: 8 }}
+                                initial={{ opacity: 0, y: 6 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
+                                exit={{ opacity: 0, y: -6 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <h4 className="text-lg font-semibold">{a.title}</h4>
-                                <p className="text-sm text-muted-foreground leading-relaxed mt-1">{a.description}</p>
+                                <h4 className="text-base sm:text-lg font-semibold leading-snug">{a.title}</h4>
                               </motion.div>
                             ) : (
                               <motion.div
                                 key="backTitle"
-                                initial={{ opacity: 0, y: 8 }}
+                                initial={{ opacity: 0, y: 6 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
+                                exit={{ opacity: 0, y: -6 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <p className="text-xs uppercase tracking-wider text-primary font-medium">{a.backTitle}</p>
-                                <h4 className="text-lg font-semibold mt-1">{a.title}</h4>
+                                <p className="text-[10px] sm:text-xs uppercase tracking-wider text-primary font-medium">
+                                  {a.backTitle}
+                                </p>
+                                <h4 className="text-base sm:text-lg font-semibold mt-0.5 leading-snug">
+                                  {a.title}
+                                </h4>
                               </motion.div>
                             )}
                           </AnimatePresence>
                         </div>
                       </div>
 
+                      {/* Explore / Back — always visible on all screen sizes */}
                       <button
                         type="button"
                         onClick={() => toggleFocus(a.id)}
-                        className="hidden sm:inline-flex items-center gap-2 text-primary text-sm font-medium hover:opacity-90"
+                        className="inline-flex items-center gap-1 sm:gap-1.5 text-primary text-xs sm:text-sm font-medium shrink-0 hover:opacity-80 transition-opacity pt-0.5"
                       >
-                        {isOpen ? "Back" : "Explore"}
-                        {isOpen ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
+                        <span className="hidden sm:inline">{isOpen ? "Back" : "Explore"}</span>
+                        {isOpen ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}
                       </button>
                     </div>
 
-                    {/* Body (locked height, scroll if longer) */}
-                    <div className="mt-4 min-h-0">
-                      <AnimatePresence mode="wait" initial={false}>
-                        {!isOpen ? (
-                          <motion.div
-                            key="frontBody"
-                            initial={{ opacity: 0, scale: 0.98, y: 10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.98, y: -10 }}
-                            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full text-sm text-muted-foreground leading-relaxed"
-                          >
-                            <div className="h-px w-full bg-gradient-to-r from-primary/20 via-primary/10 to-transparent mb-4" />
-                            <p className="max-w-[52ch]">{a.description}</p>
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            key="backBody"
-                            initial={{ opacity: 0, scale: 0.98, y: 10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.98, y: -10 }}
-                            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full text-sm text-muted-foreground"
-                          >
-                            <div className="h-px w-full bg-gradient-to-r from-primary/25 via-primary/10 to-transparent mb-4" />
-                            <div className="h-[92px] overflow-auto pr-2 space-y-2.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                              {a.backPoints.map((p) => (
-                                <div key={p} className="flex gap-2">
-                                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/70 shrink-0" />
-                                  <span className="leading-relaxed">{p}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                    {/* Divider */}
+                    <div className="h-px w-full bg-gradient-to-r from-primary/20 via-primary/10 to-transparent" />
 
-                    {/* Footer: pinned and stable */}
-                    <div className="pt-4">
-                      <motion.div
-                        layout
-                        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-wrap gap-2"
-                      >
-                        {a.stats.map((s) => (
-                          <span
-                            key={s}
-                            className="text-[11px] px-2.5 py-1 rounded-full border border-primary/15 bg-white/60 dark:bg-white/5 backdrop-blur-md text-foreground/80"
-                          >
-                            {s}
-                          </span>
-                        ))}
-                      </motion.div>
-
-                      <div className="sm:hidden mt-4">
-                        <button
-                          type="button"
-                          onClick={() => toggleFocus(a.id)}
-                          className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:opacity-90"
+                    {/* Body — fluid, no overflow scroll */}
+                    <AnimatePresence mode="wait" initial={false}>
+                      {!isOpen ? (
+                        <motion.p
+                          key="frontBody"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                          className="text-sm text-muted-foreground leading-relaxed"
                         >
-                          {isOpen ? "Back" : "Explore"}
-                          {isOpen ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
-                        </button>
-                      </div>
-                    </div>
+                          {a.description}
+                        </motion.p>
+                      ) : (
+                        <motion.ul
+                          key="backBody"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                          className="space-y-2 sm:space-y-2.5 text-sm text-muted-foreground"
+                        >
+                          {a.backPoints.map((p) => (
+                            <li key={p} className="flex gap-2">
+                              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/70 shrink-0" />
+                              <span className="leading-relaxed">{p}</span>
+                            </li>
+                          ))}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
 
-                    {/* Accent line INSIDE card */}
-                    <div className="pointer-events-none absolute bottom-10 left-0 h-[2px] w-full bg-gradient-to-r from-primary/40 via-primary/10 to-transparent" />
+                    {/* Footer chips */}
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      {a.stats.map((s) => (
+                        <span
+                          key={s}
+                          className="text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-primary/15 bg-white/60 dark:bg-white/5 backdrop-blur-md text-foreground/80 whitespace-nowrap"
+                        >
+                          {s}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </motion.div>
               );
@@ -485,8 +484,14 @@ const OfferingsSection = () => {
       </div>
 
       {/* Wave separator */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+      <div className="absolute bottom-0 left-0 right-0 leading-none">
+        <svg
+          viewBox="0 0 1440 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full block"
+          preserveAspectRatio="none"
+        >
           <path d="M0 40C240 60 480 20 720 40C960 60 1200 25 1440 45V80H0V40Z" fill="white" />
         </svg>
       </div>

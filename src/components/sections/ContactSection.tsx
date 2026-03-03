@@ -167,7 +167,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="font-medium text-foreground">Location</p>
-                  <p className="text-sm text-muted-foreground">San Francisco, CA</p>
+                  <p className="text-sm text-muted-foreground">Melbourne, VIC</p>
                 </div>
               </motion.div>
 

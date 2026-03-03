@@ -221,7 +221,7 @@ const HeroSection = () => {
           position: relative;
         }
 
-        /* Badge strip — mobile/tablet */
+        /* Badge strip - mobile/tablet */
         .badge-strip {
           display: flex; flex-wrap: wrap; gap: 8px;
           justify-content: center; margin-top: 20px;
@@ -332,7 +332,7 @@ const HeroSection = () => {
               }}
             >
               A passionate designer and developer crafting beautiful digital
-              experiences that connect brands with their audience — with precision, taste, and purpose.
+              experiences that connect brands with their audience - with precision, taste, and purpose.
             </motion.p>
 
             <motion.div
@@ -373,7 +373,7 @@ const HeroSection = () => {
           </div>
 
           {/* ── IMAGE COL ── */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, marginTop: isMobile ? 20 : 0,  }}>
             <motion.div
               ref={containerRef}
               initial={{ opacity: 0, x: isDesktop ? 36 : 0, y: isMobile ? -16 : 0 }}
@@ -429,7 +429,7 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
-              {/* ── FLOATING BADGES — desktop only ── */}
+              {/* ── FLOATING BADGES - desktop only ── */}
               {isDesktop && badges.map((b, i) => (
                 <FloatingBadge
                   key={b.id}
@@ -440,7 +440,7 @@ const HeroSection = () => {
                 />
               ))}
 
-              {/* Corner brackets — desktop only */}
+              {/* Corner brackets - desktop only */}
               {isDesktop && [
                 { top: 8, left: 8, borderTop: "2px solid rgba(80,112,232,0.28)", borderLeft: "2px solid rgba(80,112,232,0.28)", borderRadius: "10px 0 0 0" },
                 { top: 8, right: 8, borderTop: "2px solid rgba(80,112,232,0.28)", borderRight: "2px solid rgba(80,112,232,0.28)", borderRadius: "0 10px 0 0" },
@@ -451,7 +451,7 @@ const HeroSection = () => {
               ))}
             </motion.div>
 
-            {/* ── BADGE STRIP — mobile & tablet only, below the image ── */}
+            {/* ── BADGE STRIP - mobile & tablet only, below the image ── */}
             {!isDesktop && (
               <div className="badge-strip">
                 {badges.map((b, i) => (
