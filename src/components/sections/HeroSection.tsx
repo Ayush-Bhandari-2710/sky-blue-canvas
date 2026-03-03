@@ -22,6 +22,16 @@ const badges = [
   { icon: ShieldCheck, label: "SRE Practitioner",         id: "bottom" },
 ];
 
+// Read screen size synchronously — no useEffect needed
+const getScreenSize = () => {
+  if (typeof window === "undefined") return { isMobile: false, isTablet: false };
+  const w = window.innerWidth;
+  return {
+    isMobile: w < 640,
+    isTablet: w >= 640 && w < 1024,
+  };
+};
+
 /* ── Floating badge (desktop only) ── */
 const FloatingBadge = ({ icon: Icon, label, delay, style }) => (
   <motion.div
@@ -89,18 +99,16 @@ const HeroSection = () => {
   const containerRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
+
+  // ✅ Read window synchronously on first render — no flash, no jump
+  const [screenSize, setScreenSize] = useState(() => getScreenSize());
+  const { isMobile, isTablet } = screenSize;
   const isDesktop = !isMobile && !isTablet;
 
   useEffect(() => {
-    const check = () => {
-      setIsMobile(window.innerWidth < 640);
-      setIsTablet(window.innerWidth >= 640 && window.innerWidth < 1024);
-    };
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+    const onResize = () => setScreenSize(getScreenSize());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const rotateX = useSpring(useTransform(mouseY, [-300, 300], [5, -5]), { stiffness: 80, damping: 20 });
@@ -117,7 +125,6 @@ const HeroSection = () => {
   const imgW = isMobile ? 190 : isTablet ? 220 : 270;
   const imgH = isMobile ? 240 : isTablet ? 275 : 330;
 
-  // Desktop: floating absolute positions
   const desktopBadgePositions = {
     top:    { top: -48, left: "50%", transform: "translateX(-50%)" },
     right:  { top: 24,  right: -120 },
@@ -145,7 +152,6 @@ const HeroSection = () => {
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:wght@700;800;900&display=swap');
-
         .hero-h1 {
           font-family: 'Playfair Display', Georgia, serif;
           font-weight: 900; line-height: 1.08;
@@ -174,7 +180,7 @@ const HeroSection = () => {
         }
         @keyframes pulse-dot {
           0%, 100% { box-shadow: 0 0 0 2px rgba(76,175,80,0.2); }
-          50% { box-shadow: 0 0 0 5px rgba(76,175,80,0.08); }
+          50%       { box-shadow: 0 0 0 5px rgba(76,175,80,0.08); }
         }
         .btn-primary {
           display: inline-flex; align-items: center; gap: 8px;
@@ -220,18 +226,14 @@ const HeroSection = () => {
           box-shadow: 0 24px 60px rgba(60,80,180,0.12), 0 6px 20px rgba(60,80,180,0.08);
           position: relative;
         }
-
-        /* Badge strip - mobile/tablet */
         .badge-strip {
           display: flex; flex-wrap: wrap; gap: 8px;
           justify-content: center; margin-top: 20px;
         }
-
-        /* Center text on mobile */
         @media (max-width: 639px) {
           .hero-text-col { text-align: center; align-items: center; }
-          .hero-btns { justify-content: center !important; }
-          .hero-stats { justify-content: center !important; }
+          .hero-btns     { justify-content: center !important; }
+          .hero-stats    { justify-content: center !important; }
         }
       `}</style>
 
@@ -242,7 +244,6 @@ const HeroSection = () => {
       }} />
       <div className="hero-grid-bg" />
 
-      {/* Desktop-only decorative rings */}
       {isDesktop && [600, 380].map((size, i) => (
         <div key={i} style={{
           position: "absolute", width: size, height: size, borderRadius: "50%",
@@ -252,13 +253,11 @@ const HeroSection = () => {
         }} />
       ))}
 
-      {/* Desktop-only glows */}
       {isDesktop && <>
         <div style={{ position: "absolute", top: "10%", right: "15%", width: 380, height: 380, background: "radial-gradient(circle, rgba(99,130,255,0.1) 0%, transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "15%", left: "10%", width: 280, height: 280, background: "radial-gradient(circle, rgba(120,100,255,0.07) 0%, transparent 70%)", filter: "blur(40px)", pointerEvents: "none" }} />
       </>}
 
-      {/* Particles */}
       {PARTICLES.map((p) => (
         <motion.div key={p.id} style={{
           position: "absolute", left: `${p.x}%`, top: `${p.y}%`,
@@ -319,7 +318,11 @@ const HeroSection = () => {
               className="hero-line-rule"
               initial={{ scaleX: 0, opacity: 0 }} animate={{ scaleX: 1, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              style={{ width: isMobile ? "80%" : 260, maxWidth: 260, marginBottom: 20, transformOrigin: isMobile ? "center" : "left", alignSelf: isMobile ? "center" : "flex-start" }}
+              style={{
+                width: isMobile ? "80%" : 260, maxWidth: 260, marginBottom: 20,
+                transformOrigin: isMobile ? "center" : "left",
+                alignSelf: isMobile ? "center" : "flex-start",
+              }}
             />
 
             <motion.p
@@ -356,9 +359,9 @@ const HeroSection = () => {
               style={{ display: "flex", gap: 10, flexWrap: isMobile ? "wrap" : "nowrap" }}
             >
               {[
-                { num: "5+", label: "Years Experience" },
-                { num: "60+", label: "Projects Delivered" },
-                { num: "100%", label: "Satisfaction Rate" },
+                { num: "5+",   label: "Years Experience"   },
+                { num: "60+",  label: "Projects Delivered" },
+                { num: "100%", label: "Satisfaction Rate"  },
               ].map((stat, i) => (
                 <div key={i} className="stat-card" style={{ padding: isMobile ? "11px 14px" : "14px 18px" }}>
                   <span style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? 17 : 22, fontWeight: 700, color: "#4a6df0", lineHeight: 1 }}>
@@ -373,7 +376,7 @@ const HeroSection = () => {
           </div>
 
           {/* ── IMAGE COL ── */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, marginTop: isMobile ? 20 : 0,  }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
             <motion.div
               ref={containerRef}
               initial={{ opacity: 0, x: isDesktop ? 36 : 0, y: isMobile ? -16 : 0 }}
@@ -385,7 +388,6 @@ const HeroSection = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                // Only add padding for floating badges on desktop
                 padding: isDesktop ? "60px 90px" : "0",
               }}
             >
@@ -429,7 +431,7 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
-              {/* ── FLOATING BADGES - desktop only ── */}
+              {/* Floating badges — desktop only */}
               {isDesktop && badges.map((b, i) => (
                 <FloatingBadge
                   key={b.id}
@@ -440,18 +442,18 @@ const HeroSection = () => {
                 />
               ))}
 
-              {/* Corner brackets - desktop only */}
+              {/* Corner brackets — desktop only */}
               {isDesktop && [
-                { top: 8, left: 8, borderTop: "2px solid rgba(80,112,232,0.28)", borderLeft: "2px solid rgba(80,112,232,0.28)", borderRadius: "10px 0 0 0" },
-                { top: 8, right: 8, borderTop: "2px solid rgba(80,112,232,0.28)", borderRight: "2px solid rgba(80,112,232,0.28)", borderRadius: "0 10px 0 0" },
-                { bottom: 8, left: 8, borderBottom: "2px solid rgba(80,112,232,0.28)", borderLeft: "2px solid rgba(80,112,232,0.28)", borderRadius: "0 0 0 10px" },
-                { bottom: 8, right: 8, borderBottom: "2px solid rgba(80,112,232,0.28)", borderRight: "2px solid rgba(80,112,232,0.28)", borderRadius: "0 0 10px 0" },
+                { top: 8,    left: 8,  borderTop:    "2px solid rgba(80,112,232,0.28)", borderLeft:   "2px solid rgba(80,112,232,0.28)", borderRadius: "10px 0 0 0"  },
+                { top: 8,    right: 8, borderTop:    "2px solid rgba(80,112,232,0.28)", borderRight:  "2px solid rgba(80,112,232,0.28)", borderRadius: "0 10px 0 0"  },
+                { bottom: 8, left: 8,  borderBottom: "2px solid rgba(80,112,232,0.28)", borderLeft:   "2px solid rgba(80,112,232,0.28)", borderRadius: "0 0 0 10px"  },
+                { bottom: 8, right: 8, borderBottom: "2px solid rgba(80,112,232,0.28)", borderRight:  "2px solid rgba(80,112,232,0.28)", borderRadius: "0 0 10px 0"  },
               ].map((s, i) => (
                 <div key={i} style={{ position: "absolute", width: 22, height: 22, ...s }} />
               ))}
             </motion.div>
 
-            {/* ── BADGE STRIP - mobile & tablet only, below the image ── */}
+            {/* Badge strip — mobile & tablet only */}
             {!isDesktop && (
               <div className="badge-strip">
                 {badges.map((b, i) => (
