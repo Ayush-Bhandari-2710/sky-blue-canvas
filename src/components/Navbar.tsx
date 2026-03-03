@@ -180,7 +180,7 @@ export default function Navbar() {
                   fontSize: 20, fontWeight: 800, letterSpacing: "-0.03em",
                   background: "linear-gradient(135deg, #2a3cad, #5c7cfa)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                }}>lio</span>
+                }}>Portfolio</span>
               </motion.a>
               <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
                 {NAV.map((item, i) => (
