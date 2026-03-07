@@ -8,6 +8,7 @@ import {
 const cases = [
   {
     id: "01",
+    href: "https://medium.com/@uchit86/case-study-establishing-enterprise-architecture-governance-at-asias-largest-bank-483c33c5dc06",
     category: "Banking & Financial Services · Enterprise Architecture",
     title: "EA Governance at Asia's Largest Bank",
     subtitle: "Asia's Largest Bank",
@@ -23,6 +24,7 @@ const cases = [
   },
   {
     id: "02",
+    href: "https://medium.com/@uchit86/delivering-a-multi-region-banking-payment-platform-in-3-months-2dcf76b8edbe",
     category: "Banking · Payment Infrastructure · Multi-Region",
     title: "Multi-Region Payment Platform — Delivered in 3 Months",
     subtitle: "Delivered in 3 Months",
@@ -38,6 +40,7 @@ const cases = [
   },
   {
     id: "03",
+    href: "https://medium.com/@uchit86/case-study-building-a-high-speed-digital-lending-platform-at-scale-878a045e794a",
     category: "FinTech · Platform Engineering · Speed-to-Market",
     title: "High-Speed Digital Lending Platform at Scale",
     subtitle: "Platform at Scale",
@@ -53,6 +56,7 @@ const cases = [
   },
   {
     id: "04",
+    href: "https://medium.com/@uchit86/case-study-enterprise-grade-data-archival-platform-transformation-f840ad8eb504",
     category: "Data Platform · Compliance · Cost Optimisation",
     title: "Enterprise Data Archival Platform Transformation",
     subtitle: "Platform Transformation",
@@ -68,6 +72,7 @@ const cases = [
   },
   {
     id: "05",
+    href: "https://medium.com/@uchit86/case-study-retail-platform-modernisation-innovation-roadmap-7afaaf6144d6",
     category: "Retail · Digital Transformation · Innovation Strategy",
     title: "Retail Platform Modernisation & Innovation Roadmap",
     subtitle: "Innovation Roadmap",
@@ -213,6 +218,7 @@ function CaseCard({
   const headerHeight = isMobile ? 160 : 185;
 
   return (
+    <a href={c.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
     <motion.div
       ref={cardRef}
       initial={{ opacity: 0, y: isMobile ? 20 : 38 }}
@@ -270,6 +276,7 @@ function CaseCard({
         </div>
       </div>
     </motion.div>
+    </a>
   );
 }
 
@@ -301,7 +308,7 @@ function MediumCard({ inView, isMobile }: { inView: boolean; isMobile: boolean }
       style={{ rotateX: isMobile ? 0 : rx, rotateY: isMobile ? 0 : ry, transformStyle: "preserve-3d" }}
     >
       <motion.a
-        href="https://medium.com/@uchit86"
+        href="https://medium.com/@uchit86/list/case-studies-3b49f567c551"
         target="_blank" rel="noreferrer"
         style={{
           display: "flex", flexDirection: "column" as const,
