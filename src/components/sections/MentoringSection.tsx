@@ -6,21 +6,21 @@ import {
 } from "lucide-react";
 
 const mentoringAreas = [
-  { icon: Target,    title: "Career Architecture",                  body: "Building deliberate careers — not accidental ones. How to position yourself for senior IC and leadership roles in enterprise technology without losing technical credibility.", accent: "#3b82f6" },
+  { icon: Target,    title: "Career Architecture",                  body: "Building deliberate careers - not accidental ones. How to position yourself for senior IC and leadership roles in enterprise technology without losing technical credibility.", accent: "#3b82f6" },
   { icon: TrendingUp,title: "Technical to Strategic",               body: "How to translate engineering depth into business influence. Making the shift from solving technical problems to defining programmes that connect technology investment to commercial outcomes.", accent: "#6366f1" },
   { icon: Users,     title: "Engineering Leadership",               body: "Leading engineering teams and architecture practices with authority and clarity. Navigating stakeholders, managing technical debt politically, and building systems thinking into your leadership.", accent: "#0ea5e9" },
-  { icon: Layers,    title: "Platform & Architecture Thinking",     body: "Deep mentoring for those moving into Enterprise Architecture, Platform Engineering, or DevSecOps leadership — with real patterns, frameworks, and decision models from live enterprise programs.", accent: "#8b5cf6" },
-  { icon: BookOpen,  title: "Thought Leadership & Visibility",      body: "How to build a credible technical voice — through writing, speaking, and building in public. Turning expertise into influence beyond your organisation.", accent: "#059669" },
+  { icon: Layers,    title: "Platform & Architecture Thinking",     body: "Deep mentoring for those moving into Enterprise Architecture, Platform Engineering, or DevSecOps leadership - with real patterns, frameworks, and decision models from live enterprise programs.", accent: "#8b5cf6" },
+  { icon: BookOpen,  title: "Thought Leadership & Visibility",      body: "How to build a credible technical voice - through writing, speaking, and building in public. Turning expertise into influence beyond your organisation.", accent: "#059669" },
   { icon: Globe,     title: "Working Across Cultures & Geographies",body: "Navigating multinational enterprise programs across ASEAN, Europe, and Australia. Building relationships and delivering outcomes across different organisational cultures.", accent: "#f59e0b" },
 ];
 
 const testimonials = [
-  { quote: "Uchit doesn't just give answers — he helps you ask better questions. That shift alone changed how I lead.",                                                                 name: "Emma R.",    role: "Principal Engineer",      company: "Global Bank, Singapore"    },
+  { quote: "Uchit doesn't just give answers - he helps you ask better questions. That shift alone changed how I lead.",                                                                 name: "Emma R.",    role: "Principal Engineer",      company: "Global Bank, Singapore"    },
   { quote: "The frameworks he shared completely changed how I approach enterprise clients. Three months in I had my first C-suite conversation.",                                       name: "James W.",   role: "Independent Consultant",   company: "London, UK"                },
   { quote: "Direct, practical, no fluff. I went from lead to principal in under a year. Worth every session.",                                                                         name: "Priya S.",   role: "Principal Architect",     company: "APAC Telco"                },
   { quote: "I was stuck on the IC track for three years. Two months with Uchit and I had a concrete roadmap to my first architecture role.",                                           name: "Daniel M.",  role: "Cloud Architect",         company: "Melbourne, Australia"      },
   { quote: "His ability to bridge commercial thinking with technical depth is rare. He helped me find my leadership voice.",                                                            name: "Aisha T.",   role: "VP Engineering",          company: "FinTech, Dubai"            },
-  { quote: "Uchit helped me understand the political landscape of enterprise delivery — something no certification teaches you.",                                                       name: "Marcus L.",  role: "Platform Lead",           company: "Retail Enterprise, Sydney" },
+  { quote: "Uchit helped me understand the political landscape of enterprise delivery - something no certification teaches you.",                                                       name: "Marcus L.",  role: "Platform Lead",           company: "Retail Enterprise, Sydney" },
 ];
 
 const stats = [
@@ -31,7 +31,7 @@ const stats = [
 ];
 
 // ─── Infinite testimonial marquee ─────────────────────────────────────────────
-// Subtle accent palette — one per testimonial, cycling
+// Subtle accent palette - one per testimonial, cycling
 const CARD_ACCENTS = [
   { color:"#3b82f6", bg:"rgba(59,130,246,0.04)",  avatarBg:"linear-gradient(135deg,#dbeafe,#bfdbfe)", borderHover:"rgba(59,130,246,0.35)"  },
   { color:"#6366f1", bg:"rgba(99,102,241,0.04)",  avatarBg:"linear-gradient(135deg,#e0e7ff,#c7d2fe)", borderHover:"rgba(99,102,241,0.35)"  },
@@ -232,7 +232,7 @@ const MentoringSection = () => {
           <motion.div initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.55,delay:0.07,ease:[0.16,1,0.3,1]}} style={{textAlign:"center",marginBottom:isMobile?16:20}}>
             <h2 style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:isMobile?"clamp(28px,8vw,38px)":"clamp(38px,5vw,58px)",fontWeight:800,letterSpacing:"-0.03em",lineHeight:1.05,color:"#0f172a",margin:"0 0 20px"}}>Mentoring</h2>
             <p style={{fontSize:isMobile?14:16,color:"#475569",lineHeight:1.82,maxWidth:640,margin:"0 auto",fontWeight:400}}>
-              I mentor engineers, architects, and technology leaders at inflection points — the move from IC to lead, from lead to principal, from technical to strategic. My mentoring is direct, practical, and grounded in 15+ years of real delivery across some of the most demanding organisations in the world.
+              I mentor engineers, architects, and technology leaders at inflection points - the move from IC to lead, from lead to principal, from technical to strategic. My mentoring is direct, practical, and grounded in 15+ years of real delivery across some of the most demanding organisations in the world.
             </p>
           </motion.div>
 
@@ -294,7 +294,7 @@ const MentoringSection = () => {
                 <p style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:isMobile?18:22,fontWeight:700,color:"#0f172a",lineHeight:1.55,margin:"0 0 14px"}}>
                   "The best mentor I ever had didn't tell me what to do. They helped me think more clearly about the right question. That's the kind of mentor I try to be."
                 </p>
-                <span style={{fontSize:12,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase" as const,color:"#94a3b8"}}>— Uchit Vyas</span>
+                <span style={{fontSize:12,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase" as const,color:"#94a3b8"}}>- Uchit Vyas</span>
               </div>
             </motion.div>
             <motion.div initial={{opacity:0,x:16}} animate={quoteInView?{opacity:1,x:0}:{}} transition={{duration:0.6,delay:0.12,ease:[0.22,1,0.36,1]}}>
@@ -305,7 +305,7 @@ const MentoringSection = () => {
                 I work with people who are serious about growing. That means being honest when something isn't working, being specific about what needs to change, and holding you accountable to the goals you set.
               </p>
               <p style={{fontSize:15,color:"#475569",lineHeight:1.82,margin:"0 0 24px"}}>
-                I don't do motivational speeches. I do working sessions with real outputs. Available via Emergent Mentors for structured 1:1 mentoring sessions — also open to informal conversations for people earlier in their journey.
+                I don't do motivational speeches. I do working sessions with real outputs. Available via Emergent Mentors for structured 1:1 mentoring sessions - also open to informal conversations for people earlier in their journey.
               </p>
               <a href="https://emergimentors.com.au/mentor-profile/uchit-vyas" target="_blank" rel="noreferrer"
                 style={{display:"inline-flex",alignItems:"center",gap:7,fontSize:13.5,fontWeight:700,color:"#3b82f6",textDecoration:"none",fontFamily:"'Bricolage Grotesque',sans-serif",transition:"gap 0.2s"}}

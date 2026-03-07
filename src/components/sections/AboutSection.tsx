@@ -97,7 +97,7 @@ const impactAreas = [
   {
     icon: Layers,
     title: "Enterprise Architecture\n& Cloud Transformation",
-    body: "Applied TOGAF, SAFe, and BIAN to define reference architectures and modernisation roadmaps. Governed multi-cloud platforms across AWS, Azure, GCP, and Oracle — embedding Kubernetes, OpenShift, and FinOps practices at scale.",
+    body: "Applied TOGAF, SAFe, and BIAN to define reference architectures and modernisation roadmaps. Governed multi-cloud platforms across AWS, Azure, GCP, and Oracle - embedding Kubernetes, OpenShift, and FinOps practices at scale.",
     tags: ["TOGAF", "AWS", "Azure", "GCP", "FinOps"],
     accent: "#3b82f6",
     glow: "rgba(59,130,246,0.12)",
@@ -105,7 +105,7 @@ const impactAreas = [
   {
     icon: Shield,
     title: "DevSecOps &\nPlatform Engineering",
-    body: "Designed secure, self-service internal developer platforms by embedding policy-as-code and software supply chain controls into CI/CD pipelines — accelerating delivery without sacrificing compliance or resilience.",
+    body: "Designed secure, self-service internal developer platforms by embedding policy-as-code and software supply chain controls into CI/CD pipelines - accelerating delivery without sacrificing compliance or resilience.",
     tags: ["DevSecOps", "IDP", "CI/CD", "Policy-as-Code"],
     accent: "#818cf8",
     glow: "rgba(129,140,248,0.12)",
@@ -121,7 +121,7 @@ const impactAreas = [
   {
     icon: Cpu,
     title: "Generative AI\n& MLOps",
-    body: "Led enterprise GenAI initiatives end-to-end — from use-case design and model evaluation to MLOps and responsible adoption frameworks. Delivered platforms that improved productivity and decision-making at scale.",
+    body: "Led enterprise GenAI initiatives end-to-end - from use-case design and model evaluation to MLOps and responsible adoption frameworks. Delivered platforms that improved productivity and decision-making at scale.",
     tags: ["GenAI", "MLOps", "LLMs", "Responsible AI"],
     accent: "#34d399",
     glow: "rgba(52,211,153,0.12)",
@@ -157,7 +157,7 @@ function SectionEyebrow({ children, light = false }: { children: React.ReactNode
   );
 }
 
-// Small subsection label — replaces the big h2 headings
+// Small subsection label - replaces the big h2 headings
 function SubLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
@@ -350,8 +350,8 @@ const AboutSection = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
         .about-blob { position:absolute; border-radius:50%; pointer-events:none; filter:blur(70px); }
-        .img-card-about { border-radius:22px; overflow:hidden; border:1px solid rgba(99,130,255,0.12); box-shadow:0 24px 64px rgba(60,80,180,0.11), 0 4px 16px rgba(60,80,180,0.06); background:#e8ebf8; width:100%; position:relative; display:flex; flex-direction:column; }
-        .img-card-about img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; flex:1; min-height:0; }
+        .img-card-about { border-radius:22px; overflow:hidden; border:1px solid rgba(99,130,255,0.12); box-shadow:0 24px 64px rgba(60,80,180,0.11), 0 4px 16px rgba(60,80,180,0.06); background:#e8ebf8; width:100%; position:relative; display:flex; flex-direction:column; flex-shrink:0; }
+        .img-card-about img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; flex:1; min-height:1px; }
         .exp-pill-about { position:absolute; bottom:14px; right:14px; background:rgba(255,255,255,0.96); backdrop-filter:blur(16px); border:1px solid rgba(99,130,255,0.15); border-radius:14px; padding:10px 14px; box-shadow:0 8px 24px rgba(60,80,180,0.13); text-align:center; }
         .about-body-p  { font-size:15px;   line-height:1.85; color:#4b5a80; font-weight:400; margin:0; }
         .about-body-sm { font-size:13.5px; line-height:1.8;  color:#4b5a80; font-weight:400; margin:0; }
@@ -392,14 +392,14 @@ const AboutSection = () => {
               The <span style={{ background:"linear-gradient(135deg,#2a3cad,#5c7cfa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text" }}>Person</span> Behind the Work
             </h2>
             <p style={{ fontSize:14, color:"#94a3b8", fontWeight:400, margin:"0 auto", maxWidth:480 }}>
-              Senior Technology & Transformation Leader — turning complex technology change into measurable business outcomes.
+              Senior Technology & Transformation Leader - turning complex technology change into measurable business outcomes.
             </p>
           </motion.div>
 
           {isMobile ? (
             <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
               <motion.div initial={{ opacity:0, y:18 }} animate={sectionIn ? { opacity:1, y:0 } : {}} transition={{ delay:0.1 }}>
-                <div className="img-card-about" style={{ height:260 }}>
+                <div className="img-card-about" style={{ height:300, minHeight:300 }}>
                   <img src="/images/Uchit2.jpeg" alt="Uchit Vyas" />
                   <motion.div className="exp-pill-about" initial={{ opacity:0, scale:0.85 }} animate={sectionIn ? { opacity:1, scale:1 } : {}} transition={{ delay:0.5 }}>
                     <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:22, fontWeight:900, background:"linear-gradient(135deg,#2a3cad,#5c7cfa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", lineHeight:1 }}>15+</div>
@@ -408,11 +408,11 @@ const AboutSection = () => {
                 </div>
               </motion.div>
               <motion.div initial={{ opacity:0, y:14 }} animate={sectionIn ? { opacity:1, y:0 } : {}} transition={{ delay:0.2 }} style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                <p className="about-body-sm">I'm an Enterprise Architect and Transformation Leader with 15+ years leading enterprise-scale programs across banking, retail, and Fortune 500 organisations — from C-suite strategy to live platform delivery.</p>
+                <p className="about-body-sm">I'm an Enterprise Architect and Transformation Leader with 15+ years leading enterprise-scale programs across banking, retail, and Fortune 500 organisations - from C-suite strategy to live platform delivery.</p>
                 <p className="about-body-sm">I don't just advise on transformation; I architect and execute it. My approach combines strong engineering fundamentals with commercial acumen to deliver outcomes that actually stick.</p>
                 <div className="quote-block-about">
-                  <p style={{ fontSize:13, fontStyle:"italic", color:"#4a5a8a", lineHeight:1.7, margin:"0 0 5px" }}>"I bridge the gap between vision and execution — translating ambitious digital strategy into secure, scalable platforms that actually ship."</p>
-                  <span style={{ fontSize:10.5, color:"#9aa5c8", fontWeight:600, letterSpacing:"0.06em" }}>— Uchit Vyas</span>
+                  <p style={{ fontSize:13, fontStyle:"italic", color:"#4a5a8a", lineHeight:1.7, margin:"0 0 5px" }}>"I bridge the gap between vision and execution - translating ambitious digital strategy into secure, scalable platforms that actually ship."</p>
+                  <span style={{ fontSize:10.5, color:"#9aa5c8", fontWeight:600, letterSpacing:"0.06em" }}>- Uchit Vyas</span>
                 </div>
               </motion.div>
               <motion.div initial={{ opacity:0, y:12 }} animate={sectionIn ? { opacity:1, y:0 } : {}} transition={{ delay:0.35 }} style={{ display:"flex", flexDirection:"column", gap:8 }}>
@@ -431,7 +431,7 @@ const AboutSection = () => {
             <div style={{ display:"grid", gridTemplateColumns: isTablet ? "42% 1fr" : "1fr 1fr", gap: isTablet ? 28 : 52, alignItems:"stretch" }}>
               <motion.div initial={{ opacity:0, y:20 }} animate={sectionIn ? { opacity:1, y:0 } : {}} transition={{ duration:0.6, delay:0.1, ease:[0.22,1,0.36,1] }} style={{ display:"flex", flexDirection:"column", alignSelf:"stretch" }}>
                 <div className="img-card-about" style={{ flex:1 }}>
-                  <img src={isDesktop ? "/images/image.png" : "/images/Uchit2.jpeg"} alt="Uchit Vyas" />
+                  <img src={isDesktop ? "/images/image.png" : "/images/Uchit2.jpeg"} alt="Uchit Vyas" loading="eager" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block", minHeight:1 }} />
                   <motion.div className="exp-pill-about" initial={{ opacity:0, scale:0.85 }} animate={sectionIn ? { opacity:1, scale:1 } : {}} transition={{ delay:0.65 }}>
                     <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:22, fontWeight:900, background:"linear-gradient(135deg,#2a3cad,#5c7cfa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", lineHeight:1 }}>15+</div>
                     <div style={{ fontSize:9, color:"#9aa5c8", fontWeight:600, letterSpacing:"0.06em", textTransform:"uppercase", marginTop:3 }}>Years of<br/>Experience</div>
@@ -440,14 +440,14 @@ const AboutSection = () => {
               </motion.div>
               <motion.div initial={{ opacity:0, x:20 }} animate={sectionIn ? { opacity:1, x:0 } : {}} transition={{ duration:0.6, delay:0.2, ease:[0.22,1,0.36,1] }} style={{ display:"flex", flexDirection:"column", paddingTop:4 }}>
                 <p className={isTablet ? "about-body-sm" : "about-body-p"} style={{ marginBottom:12 }}>
-                  I'm an Enterprise Architect and Transformation Leader with 15+ years leading enterprise-scale programs across banking, retail, and Fortune 500 organisations — from C-suite strategy to live platform delivery.
+                  I'm an Enterprise Architect and Transformation Leader with 15+ years leading enterprise-scale programs across banking, retail, and Fortune 500 organisations - from C-suite strategy to live platform delivery.
                 </p>
                 <p className={isTablet ? "about-body-sm" : "about-body-p"} style={{ marginBottom:12 }}>
                   My approach is grounded in strong engineering fundamentals married with commercial acumen. I work directly with CIOs, CTOs, and business executives as a trusted advisor, cutting through complexity to define clear roadmaps and govern delivery with accountability.
                 </p>
                 {isDesktop && (
                   <p className="about-body-p">
-                    Whether establishing enterprise architecture governance at Asia's largest bank, accelerating a digital lending platform in weeks, or standing up a GenAI capability from scratch — I bring calm, decisive technical leadership to the hardest problems.
+                    Whether establishing enterprise architecture governance at Asia's largest bank, accelerating a digital lending platform in weeks, or standing up a GenAI capability from scratch - I bring calm, decisive technical leadership to the hardest problems.
                   </p>
                 )}
                 <div className="divider-about" />
@@ -464,9 +464,9 @@ const AboutSection = () => {
                 </div>
                 <div className="quote-block-about" style={{ marginTop:"auto" }}>
                   <p style={{ fontSize: isTablet ? 12.5 : 13.5, fontStyle:"italic", color:"#4a5a8a", lineHeight:1.7, margin:"0 0 5px" }}>
-                    "I bridge the gap between vision and execution — translating ambitious digital strategy into secure, scalable platforms that actually ship, perform, and deliver value at enterprise scale."
+                    "I bridge the gap between vision and execution - translating ambitious digital strategy into secure, scalable platforms that actually ship, perform, and deliver value at enterprise scale."
                   </p>
-                  <span style={{ fontSize:10.5, color:"#9aa5c8", fontWeight:600, letterSpacing:"0.06em" }}>— Uchit Vyas</span>
+                  <span style={{ fontSize:10.5, color:"#9aa5c8", fontWeight:600, letterSpacing:"0.06em" }}>- Uchit Vyas</span>
                 </div>
               </motion.div>
             </div>
@@ -495,7 +495,7 @@ const AboutSection = () => {
       <div className="section-divider" />
 
       {/* ══════════════════════════════════════════════════════════════
-          §2 CREDENTIALS — unified: stats + certs + industries
+          §2 CREDENTIALS - unified: stats + certs + industries
       ══════════════════════════════════════════════════════════════ */}
       <div ref={credRef} style={{ padding: isMobile ? "56px 0 60px" : "72px 0 80px" }}>
         <div style={{ maxWidth:1100, margin:"0 auto", padding:px }}>
@@ -563,7 +563,7 @@ const AboutSection = () => {
       <div className="section-divider" />
 
       {/* ══════════════════════════════════════════════════════════════
-          §3 IMPACT — magnetic tilt + scroll shimmer
+          §3 IMPACT - magnetic tilt + scroll shimmer
       ══════════════════════════════════════════════════════════════ */}
       <div ref={impactRef} style={{ padding: isMobile ? "56px 0" : "72px 0" }}>
         <div style={{ maxWidth:1100, margin:"0 auto", padding:px }}>
@@ -612,15 +612,15 @@ const AboutSection = () => {
               </h2>
               <div style={{ borderLeft:"2.5px solid rgba(59,130,246,0.35)", paddingLeft:20, marginBottom:24 }}>
                 <p style={{ fontSize: isMobile ? 13.5 : 15.5, fontStyle:"italic", color:"#334155", lineHeight:1.8, margin:0 }}>
-                  "I bridge the gap between vision and execution — translating ambitious digital strategy into secure, scalable platforms that actually ship, perform, and deliver value at enterprise scale."
+                  "I bridge the gap between vision and execution - translating ambitious digital strategy into secure, scalable platforms that actually ship, perform, and deliver value at enterprise scale."
                 </p>
-                <span style={{ display:"block", marginTop:8, fontSize:10.5, color:"#94a3b8", fontWeight:600, letterSpacing:"0.07em" }}>— Uchit Vyas</span>
+                <span style={{ display:"block", marginTop:8, fontSize:10.5, color:"#94a3b8", fontWeight:600, letterSpacing:"0.07em" }}>- Uchit Vyas</span>
               </div>
               <p style={{ fontSize:14, color:"#475569", lineHeight:1.82, margin:"0 0 12px" }}>
                 My approach is grounded in strong engineering fundamentals married with commercial acumen. I work directly with CIOs, CTOs, and business executives as a trusted advisor, cutting through complexity to define clear roadmaps and govern delivery with accountability.
               </p>
               <p style={{ fontSize:14, color:"#475569", lineHeight:1.82, margin:0 }}>
-                Whether establishing enterprise architecture governance at Asia's largest bank, accelerating a digital lending platform in weeks, or standing up a GenAI capability from scratch — I bring calm, decisive technical leadership to the hardest problems.
+                Whether establishing enterprise architecture governance at Asia's largest bank, accelerating a digital lending platform in weeks, or standing up a GenAI capability from scratch - I bring calm, decisive technical leadership to the hardest problems.
               </p>
             </motion.div>
 
@@ -631,7 +631,7 @@ const AboutSection = () => {
                   Ready to work<br />together?
                 </h3>
                 <p style={{ fontSize:13.5, color:"#64748b", lineHeight:1.72, margin:"0 0 28px" }}>
-                  Whether you need an enterprise architect, transformation leader, or strategic technology advisor — let's talk about how I can help.
+                  Whether you need an enterprise architect, transformation leader, or strategic technology advisor - let's talk about how I can help.
                 </p>
                 <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:32 }}>
                   {["Advisory & Strategy","Architecture & Design","Platform & Transformation","Workshops & Enablement"].map((item, i) => (

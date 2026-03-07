@@ -22,7 +22,7 @@ const badges = [
   { icon: ShieldCheck, label: "SRE Practitioner",           id: "bottom" },
 ];
 
-// Read screen size synchronously — no useEffect needed
+// Read screen size synchronously - no useEffect needed
 const getScreenSize = () => {
   if (typeof window === "undefined") return { isMobile: false, isTablet: false };
   const w = window.innerWidth;
@@ -100,7 +100,7 @@ const HeroSection = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // ✅ Read window synchronously on first render — no flash, no jump
+  // ✅ Read window synchronously on first render - no flash, no jump
   const [screenSize, setScreenSize] = useState(() => getScreenSize());
   const { isMobile, isTablet } = screenSize;
   const isDesktop = !isMobile && !isTablet;
@@ -334,7 +334,7 @@ const HeroSection = () => {
                 alignSelf: isMobile ? "center" : "flex-start",
               }}
             >
-              I turn complex technology change into measurable business outcomes —
+              I turn complex technology change into measurable business outcomes -
               from C-suite strategy to live platform. 15+ years across banking,
               retail, and Fortune 500 enterprises.
             </motion.p>
@@ -432,7 +432,7 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
-              {/* Floating badges — desktop only */}
+              {/* Floating badges - desktop only */}
               {isDesktop && badges.map((b, i) => (
                 <FloatingBadge
                   key={b.id}
@@ -443,7 +443,7 @@ const HeroSection = () => {
                 />
               ))}
 
-              {/* Corner brackets — desktop only */}
+              {/* Corner brackets - desktop only */}
               {isDesktop && [
                 { top: 8,    left: 8,  borderTop:    "2px solid rgba(80,112,232,0.28)", borderLeft:   "2px solid rgba(80,112,232,0.28)", borderRadius: "10px 0 0 0"  },
                 { top: 8,    right: 8, borderTop:    "2px solid rgba(80,112,232,0.28)", borderRight:  "2px solid rgba(80,112,232,0.28)", borderRadius: "0 10px 0 0"  },
@@ -454,7 +454,7 @@ const HeroSection = () => {
               ))}
             </motion.div>
 
-            {/* Badge strip — mobile & tablet only */}
+            {/* Badge strip - mobile & tablet only */}
             {!isDesktop && (
               <div className="badge-strip">
                 {badges.map((b, i) => (

@@ -87,7 +87,7 @@ const focusAreas = [
     title: "Platform Engineering & DevSecOps",
     description: "Internal developer platforms, secure CI/CD, and policy-as-code guardrails for faster, safer delivery.",
     color: "#6366f1",
-    back: "IDP delivery with self-service golden paths. Pipeline hardening across the SDLC. Top 50 DevSecOps recognition globally — 30+ conference talks.",
+    back: "IDP delivery with self-service golden paths. Pipeline hardening across the SDLC. Top 50 DevSecOps recognition globally - 30+ conference talks.",
     chips: ["IDP", "Policy-as-Code", "Pipeline Hardening", "SRE"],
   },
   {
@@ -118,7 +118,7 @@ const engagementModes = [
     label: "Advise",
     sublabel: "Strategy & Advisory",
     color: "#3b82f6",
-    description: "Short, high-intensity engagements for leadership teams facing critical architecture or transformation decisions. I assess, challenge, and define a clear path forward — with options, trade-offs, and a prioritised roadmap you can act on immediately.",
+    description: "Short, high-intensity engagements for leadership teams facing critical architecture or transformation decisions. I assess, challenge, and define a clear path forward - with options, trade-offs, and a prioritised roadmap you can act on immediately.",
     deliverables: [
       "Architecture assessment & gap analysis",
       "Technology strategy & investment options",
@@ -132,7 +132,7 @@ const engagementModes = [
     label: "Architect",
     sublabel: "Design & Blueprint",
     color: "#6366f1",
-    description: "From strategy to buildable design. I define target-state architectures, governance models, and implementation blueprints that engineering teams can execute — with enough rigour to survive contact with reality.",
+    description: "From strategy to buildable design. I define target-state architectures, governance models, and implementation blueprints that engineering teams can execute - with enough rigour to survive contact with reality.",
     deliverables: [
       "Reference & target-state architecture",
       "Platform & data modernisation blueprints",
@@ -146,7 +146,7 @@ const engagementModes = [
     label: "Execute",
     sublabel: "Embedded Delivery",
     color: "#06b6d4",
-    description: "Hands-on delivery leadership for complex programs — embedded in your organisation, driving technical outcomes, managing architecture decisions in real time, ensuring what gets built matches what was designed.",
+    description: "Hands-on delivery leadership for complex programs - embedded in your organisation, driving technical outcomes, managing architecture decisions in real time, ensuring what gets built matches what was designed.",
     deliverables: [
       "Program & platform delivery leadership",
       "Architecture governance during build",
@@ -187,7 +187,7 @@ function TiltCard({ children, style = {}, className = "" }: any) {
 }
 
 /* ─────────────────────────────────────────
-   ENGAGEMENT MODE CARD — white/blue/green palette
+   ENGAGEMENT MODE CARD - white/blue/green palette
    Tilt on hover, glow border, click-only expand, smooth animation
 ───────────────────────────────────────── */
 function EngagementCard({ mode, index, isInView }: { mode: typeof engagementModes[0]; index: number; isInView: boolean }) {
@@ -196,7 +196,7 @@ function EngagementCard({ mode, index, isInView }: { mode: typeof engagementMode
   const cardRef = useRef<HTMLDivElement>(null);
   const Icon = mode.icon;
 
-  // Smooth tilt physics — spring returns to 0 on leave
+  // Smooth tilt physics - spring returns to 0 on leave
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 220, damping: 32 });
@@ -248,7 +248,7 @@ function EngagementCard({ mode, index, isInView }: { mode: typeof engagementMode
         transition: "background 0.3s, border-color 0.25s, box-shadow 0.25s",
       }}
     >
-      {/* Mouse-tracked radial glow — uses spring motion values */}
+      {/* Mouse-tracked radial glow - uses spring motion values */}
       <motion.div style={{
         position: "absolute", inset: 0, pointerEvents: "none", borderRadius: 22, zIndex: 0,
         background: useTransform(
@@ -259,7 +259,7 @@ function EngagementCard({ mode, index, isInView }: { mode: typeof engagementMode
         ),
       }} />
 
-      {/* Faint dot grid — always present, brighter on hover */}
+      {/* Faint dot grid - always present, brighter on hover */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
         backgroundImage: `radial-gradient(${mode.color}15 1px, transparent 1px)`,
@@ -268,7 +268,7 @@ function EngagementCard({ mode, index, isInView }: { mode: typeof engagementMode
         transition: "opacity 0.4s",
       }} />
 
-      {/* Top accent bar — animates in on hover/active */}
+      {/* Top accent bar - animates in on hover/active */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, height: 2.5,
         background: hovered || active
@@ -349,7 +349,7 @@ function EngagementCard({ mode, index, isInView }: { mode: typeof engagementMode
           {mode.description}
         </p>
 
-        {/* Click-to-expand deliverables — layout:fixed to prevent jump */}
+        {/* Click-to-expand deliverables - layout:fixed to prevent jump */}
         <motion.div
           initial={false}
           animate={{ height: active ? "auto" : 0, opacity: active ? 1 : 0 }}
@@ -378,7 +378,7 @@ function EngagementCard({ mode, index, isInView }: { mode: typeof engagementMode
           </div>
         </motion.div>
 
-        {/* Expand hint — always rendered so layout is stable */}
+        {/* Expand hint - always rendered so layout is stable */}
         <div style={{
           display: "flex", alignItems: "center", gap: 5, marginTop: 14,
           fontSize: 11, fontWeight: 600,
@@ -418,7 +418,7 @@ function FocusCard({ area, index, isInView }: { area: typeof focusAreas[0]; inde
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         style={{ transformStyle: "preserve-3d", position: "relative", width: "100%", minHeight: 200 }}
       >
-        {/* FRONT — editorial left-accent style */}
+        {/* FRONT - editorial left-accent style */}
         <div style={{
           backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
           borderRadius: 20, overflow: "hidden",
@@ -436,7 +436,7 @@ function FocusCard({ area, index, isInView }: { area: typeof focusAreas[0]; inde
           }} />
 
           <div style={{ padding: "20px 18px 18px", flex: 1 }}>
-            {/* Icon — large, sits top-right as a decorative element */}
+            {/* Icon - large, sits top-right as a decorative element */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
               <div>
                 <div style={{
@@ -470,7 +470,7 @@ function FocusCard({ area, index, isInView }: { area: typeof focusAreas[0]; inde
               {area.description}
             </p>
 
-            {/* Chips — square pill style, distinct from offering chips */}
+            {/* Chips - square pill style, distinct from offering chips */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 12 }}>
               {area.chips.map(c => (
                 <span key={c} style={{
@@ -531,7 +531,7 @@ function FocusCard({ area, index, isInView }: { area: typeof focusAreas[0]; inde
 }
 
 /* ─────────────────────────────────────────
-   OFFERING CARD — clean white, banner-header style
+   OFFERING CARD - clean white, banner-header style
 ───────────────────────────────────────── */
 function OfferingCard({ item, index, isInView }: { item: typeof keyOfferings[0]; index: number; isInView: boolean }) {
   const [open, setOpen] = useState(false);
@@ -597,7 +597,7 @@ function OfferingCard({ item, index, isInView }: { item: typeof keyOfferings[0];
           {item.description}
         </p>
 
-        {/* Chips — text-only, no border, slash-separated feel */}
+        {/* Chips - text-only, no border, slash-separated feel */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 0", marginBottom: 14 }}>
           {item.chips.map((c, ci) => (
             <span key={c} style={{ fontSize: 11, fontWeight: 500, color: item.color }}>
@@ -808,7 +808,7 @@ export default function OfferingsSection() {
         </div>
 
         {/* ══════════════════════════════════════
-            HOW I WORK — dark section band
+            HOW I WORK - dark section band
         ══════════════════════════════════════ */}
         <div ref={howRef} style={{
           margin: isMobile ? "0 -16px" : isTablet ? "0 -24px" : "0 -32px",
@@ -852,11 +852,11 @@ export default function OfferingsSection() {
             </h2>
             <p style={{ fontSize: isMobile ? 13.5 : 14.5, color: "#64748b",
               maxWidth: 560, margin: "14px auto 0", lineHeight: 1.75 }}>
-              Three engagement modes — each designed to meet organisations at the right point in their journey, with clear outputs and no overhead.
+              Three engagement modes - each designed to meet organisations at the right point in their journey, with clear outputs and no overhead.
             </p>
           </motion.div>
 
-          {/* Connector line — desktop only */}
+          {/* Connector line - desktop only */}
           {isDesktop && (
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}

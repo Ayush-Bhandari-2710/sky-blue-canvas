@@ -10,10 +10,10 @@ import {
 } from "lucide-react";
 
 /* ─────────────────────────────────────────
-   DATA — Updated with Uchit's real expertise
+   DATA - Updated with Uchit's real expertise
 ───────────────────────────────────────── */
 
-// Core competency bars — the 8 headline domains
+// Core competency bars - the 8 headline domains
 const expertise = [
   { name: "Enterprise Architecture", value: 92, icon: Building2,   color: "#3b82f6" },
   { name: "Platform Engineering",    value: 90, icon: Layers,      color: "#8b5cf6" },
@@ -64,7 +64,7 @@ const domainCards = [
   },
 ];
 
-// Skill tiles for the bento surround — tooling grouped by category
+// Skill tiles for the bento surround - tooling grouped by category
 const toolGroups = [
   { title: "CI/CD Engines",          icon: GitMerge,  items: ["Jenkins","GitLab CI","Bamboo","Travis CI","GO-CD","GitHub Actions"] },
   { title: "Cloud Platforms",        icon: Globe,     items: ["AWS","Azure","GCP","Oracle Cloud","OpenStack","VMware"] },
@@ -170,7 +170,7 @@ function IntroCard({ e, i, isInView }) {
 }
 
 /* ─────────────────────────────────────────
-   DOMAIN CARD — centre bento cards
+   DOMAIN CARD - centre bento cards
 ───────────────────────────────────────── */
 function DomainCard({ d, index, isInView }) {
   const [hovered, setHovered] = useState(false);
@@ -223,7 +223,7 @@ function DomainCard({ d, index, isInView }) {
 }
 
 /* ─────────────────────────────────────────
-   SKILL TILE — popover on click
+   SKILL TILE - popover on click
 ───────────────────────────────────────── */
 function SkillTile({ g, accentColor, isInView, delay, compact = false }) {
   const [hovered, setHovered]   = useState(false);
@@ -414,7 +414,7 @@ export default function ExpertiseSection() {
           </div>
           <h2 className="exp-title">Technical <em>Expertise</em></h2>
           <p style={{ fontSize:14, color:"#9aa5c8", marginTop:10, fontWeight:400, maxWidth:500, margin:"10px auto 0" }}>
-            I lead enterprise technology transformation by combining architecture strategy with modern engineering execution — building secure, scalable, and resilient platforms.
+            I lead enterprise technology transformation by combining architecture strategy with modern engineering execution - building secure, scalable, and resilient platforms.
           </p>
         </motion.div>
 
@@ -425,7 +425,7 @@ export default function ExpertiseSection() {
 
           <div style={{ position:"relative", zIndex:1 }}>
             <p style={{ fontSize: isMobile ? 13.5 : 15, lineHeight:1.8, color:"rgba(255,255,255,0.72)", fontWeight:300, maxWidth:500, marginBottom: isMobile ? 20 : 28 }}>
-              My core strengths span Enterprise Architecture, Platform Engineering, DevSecOps, SRE, Generative AI, Cloud Transformation, and Data Modernisation — focused on delivery speed, reliability, governance, and cost outcomes.
+              My core strengths span Enterprise Architecture, Platform Engineering, DevSecOps, SRE, Generative AI, Cloud Transformation, and Data Modernisation - focused on delivery speed, reliability, governance, and cost outcomes.
             </p>
             <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:10, maxWidth: isMobile ? "100%" : 520 }}>
               {[
@@ -474,7 +474,7 @@ export default function ExpertiseSection() {
           <div className="slabel"><span className="slabel-dot" />Depth by Domain</div>
         </motion.div>
 
-        {/* DOMAIN CARDS — 5 cards, responsive */}
+        {/* DOMAIN CARDS - 5 cards, responsive */}
         <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(3,1fr)" : "repeat(5,1fr)", gap:12, marginBottom:28 }}>
           {domainCards.map((d, i) => <DomainCard key={d.label} d={d} index={i} isInView={isInView} />)}
         </div>

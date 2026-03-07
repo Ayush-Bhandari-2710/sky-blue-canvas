@@ -24,7 +24,7 @@ const getScrolled = () =>
   typeof window !== "undefined" && window.scrollY > 60;
 
 /* ─────────────────────────────────────────
-   Logo — shared between mobile + desktop
+   Logo - shared between mobile + desktop
 ───────────────────────────────────────── */
 function Logo({ onClick }: { onClick: () => void }) {
   return (
@@ -375,7 +375,7 @@ export default function Navbar() {
         }
       `}</style>
 
-      {/* Top bar — visible before scroll */}
+      {/* Top bar - visible before scroll */}
       <AnimatePresence>
         {!scrolled && (
           <motion.nav
@@ -439,7 +439,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Floating right dock — visible after scroll */}
+      {/* Floating right dock - visible after scroll */}
       <AnimatePresence>
         {scrolled && (
           <motion.div

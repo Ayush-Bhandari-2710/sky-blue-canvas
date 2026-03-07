@@ -99,14 +99,14 @@ const publications: Publication[] = [
   {
     id: "us-patent",
     type: "patent",
-    title: "US11334348B2 — United States Patent",
+    title: "US11334348B2 - United States Patent",
     authors: "Uchit Vyas, Jacky Wong",
     publisher: "USPTO",
     date: "Granted May 2022",
     year: 2022,
     coverImage: "/images/Book/US11334348B2.svg",
     summary:
-      "United States patent — view full details on Google Patents for inventor list, abstract, claims, and legal status.",
+      "United States patent - view full details on Google Patents for inventor list, abstract, claims, and legal status.",
     tag: "Patent",
     gradient: "from-emerald-500 to-teal-600",
     href: "https://patents.google.com/patent/US11334348B2/en",
@@ -210,7 +210,7 @@ const PublicationCard = ({
           </>
         )}
 
-        {/* Publisher badge — top left */}
+        {/* Publisher badge - top left */}
         <motion.div
           className="absolute top-3 left-3 px-2 py-0.5 rounded-full text-[10px] font-bold text-white/90 backdrop-blur-md"
           style={{ background: "rgba(0,0,0,0.32)", border: "1px solid rgba(255,255,255,0.18)" }}
@@ -388,7 +388,7 @@ function StatCard({
         transition={{ duration: 0.3 }}
       />
 
-      {/* Emoji icon — floats up on hover */}
+      {/* Emoji icon - floats up on hover */}
       <motion.div
         style={{ fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1, marginBottom: 8, filter: "saturate(1.2)" }}
         animate={{ y: hovered ? -3 : 0, scale: hovered ? 1.15 : 1 }}
@@ -397,7 +397,7 @@ function StatCard({
         {cfg.icon}
       </motion.div>
 
-      {/* Value — big animated number */}
+      {/* Value - big animated number */}
       <div style={{ lineHeight: 1, marginBottom: 6 }}>
         {"highlight" in item ? (
           // Top 50
@@ -502,7 +502,7 @@ function StatGrid({ inView }: { inView: boolean }) {
   );
 }
 
-// ─── Stat Bar — premium open layout ──────────────────────────────────────────
+// ─── Stat Bar - premium open layout ──────────────────────────────────────────
 function StatBar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -547,7 +547,7 @@ function StatBar() {
         />
       ))}
 
-      {/* ── The four stat cards — 2-col on mobile, 4-col on 480px+ ── */}
+      {/* ── The four stat cards - 2-col on mobile, 4-col on 480px+ ── */}
       <StatGrid inView={inView} />
     </div>
   );
@@ -662,7 +662,7 @@ const PublicationsMarquee = ({ pauseOnHover = true }: { pauseOnHover?: boolean }
               filter: "blur(32px)", pointerEvents: "none", zIndex: 0,
             }}
           />
-          {/* Secondary warm glow — bottom */}
+          {/* Secondary warm glow - bottom */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={headerInView ? { opacity: 1 } : {}}
@@ -676,7 +676,7 @@ const PublicationsMarquee = ({ pauseOnHover = true }: { pauseOnHover?: boolean }
             }}
           />
 
-          {/* ── Floating orbs — alive ambient ── */}
+          {/* ── Floating orbs - alive ambient ── */}
           {[
             { x: "8%",  y: "20%", w: 7,  h: 7,  c: "rgba(59,130,246,0.5)",   dur: 4.2, d: 0   },
             { x: "92%", y: "35%", w: 5,  h: 5,  c: "rgba(129,140,248,0.45)", dur: 5.8, d: 0.7 },
@@ -725,7 +725,7 @@ const PublicationsMarquee = ({ pauseOnHover = true }: { pauseOnHover?: boolean }
             </div>
           </motion.div>
 
-          {/* ── Display heading — stacked word reveal ── */}
+          {/* ── Display heading - stacked word reveal ── */}
           <div style={{ position: "relative", zIndex: 2, marginBottom: 16 }}>
             {/* Ghost echo for depth */}
             <div style={{
@@ -780,7 +780,7 @@ const PublicationsMarquee = ({ pauseOnHover = true }: { pauseOnHover?: boolean }
             />
           </div>
 
-          {/* ── Body copy — centred, constrained ── */}
+          {/* ── Body copy - centred, constrained ── */}
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
@@ -796,11 +796,11 @@ const PublicationsMarquee = ({ pauseOnHover = true }: { pauseOnHover?: boolean }
             <strong style={{ color: "#1e40af", fontWeight: 600 }}>Cloud Architecture</strong>,{" "}
             <strong style={{ color: "#1e40af", fontWeight: 600 }}>Data Engineering</strong>,{" "}
             <strong style={{ color: "#1e40af", fontWeight: 600 }}>DevSecOps</strong>, and{" "}
-            <strong style={{ color: "#1e40af", fontWeight: 600 }}>Enterprise Integration</strong> — each a practitioner's
+            <strong style={{ color: "#1e40af", fontWeight: 600 }}>Enterprise Integration</strong> - each a practitioner's
             blueprint, not a theory exercise. Published with Apress and Packt, read across 4 continents.
           </motion.p>
 
-          {/* ── CTA button — centred with shimmer ── */}
+          {/* ── CTA button - centred with shimmer ── */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
