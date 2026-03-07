@@ -188,7 +188,7 @@ export default function ContactSection() {
   const [imgHov, setImgHov] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  // Tilt — desktop only
+  // Tilt - desktop only
   const mx = useMotionValue(0), my = useMotionValue(0);
   const rx = useSpring(useTransform(my, [-0.5,0.5],[2,-2]), {stiffness:180, damping:28});
   const ry = useSpring(useTransform(mx, [-0.5,0.5],[-2,2]), {stiffness:180, damping:28});
@@ -293,7 +293,7 @@ export default function ContactSection() {
               </div>
 
               <p style={{ fontSize:13.5, color:"#7a88b4", lineHeight:1.82, margin:"12px 0 24px", maxWidth: isDesktop ? 295 : "100%" }}>
-                Speaking engagement, consulting opportunity, or mentoring conversation — I respond within 24 hours.
+                Speaking engagement, consulting opportunity, or mentoring conversation - I respond within 24 hours.
               </p>
             </motion.div>
 
@@ -311,7 +311,7 @@ export default function ContactSection() {
                   </motion.div>
                   <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} transition={{delay:0.3}}>
                     <div style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:22,fontWeight:800,color:"#1a1f4e",marginBottom:8}}>Message sent! 🎉</div>
-                    <div style={{fontSize:14,color:"#7a88b4"}}>Thanks — I'll reply within 24 hours.</div>
+                    <div style={{fontSize:14,color:"#7a88b4"}}>Thanks - I'll reply within 24 hours.</div>
                   </motion.div>
                 </motion.div>
               ) : (
@@ -357,7 +357,7 @@ export default function ContactSection() {
           overflow: "hidden",
         }}>
 
-          {/* Envelope illustration — hidden on mobile to save space, shown on tablet+ */}
+          {/* Envelope illustration - hidden on mobile to save space, shown on tablet+ */}
           {!isMobile && (
             <div
               onMouseEnter={() => setImgHov(true)}
@@ -406,7 +406,7 @@ export default function ContactSection() {
                 Connect with me
               </div>
               <p style={{ fontSize:12.5, color:"#7a88b4", margin:0, lineHeight:1.6 }}>
-                Find me on any of the channels below — I'm active and responsive.
+                Find me on any of the channels below - I'm active and responsive.
               </p>
             </motion.div>
           )}

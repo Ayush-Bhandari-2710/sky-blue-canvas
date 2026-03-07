@@ -26,7 +26,7 @@ const cases = [
     id: "02",
     href: "https://medium.com/@uchit86/delivering-a-multi-region-banking-payment-platform-in-3-months-2dcf76b8edbe",
     category: "Banking · Payment Infrastructure · Multi-Region",
-    title: "Multi-Region Payment Platform — Delivered in 3 Months",
+    title: "Multi-Region Payment Platform - Delivered in 3 Months",
     subtitle: "Delivered in 3 Months",
     cardTitle: "Multi-Region Banking Payment Platform",
     desc: "Designed and shipped a cross-region payment platform under a compressed mandate. Launched on time with zero critical production defects across all regions.",
@@ -45,7 +45,7 @@ const cases = [
     title: "High-Speed Digital Lending Platform at Scale",
     subtitle: "Platform at Scale",
     cardTitle: "High-Speed Digital Lending",
-    desc: "Replaced legacy approval workflows with event-driven microservices — turning weeks of credit decisioning into seconds without compromising compliance or audit trails.",
+    desc: "Replaced legacy approval workflows with event-driven microservices - turning weeks of credit decisioning into seconds without compromising compliance or audit trails.",
     tags: ["Microservices", "Event-Driven", "FinTech", "Kubernetes"],
     icon: Zap,
     gradFrom: "#080e28", gradMid: "#0d1f4a", gradTo: "#122868",
@@ -77,7 +77,7 @@ const cases = [
     title: "Retail Platform Modernisation & Innovation Roadmap",
     subtitle: "Innovation Roadmap",
     cardTitle: "Retail Platform Modernisation",
-    desc: "Monolith to composable API-first architecture. The phased roadmap connected technology investment to commercial outcomes — faster time-to-market, reduced cost, new revenue-enabling capabilities.",
+    desc: "Monolith to composable API-first architecture. The phased roadmap connected technology investment to commercial outcomes - faster time-to-market, reduced cost, new revenue-enabling capabilities.",
     tags: ["API-First", "Modernisation", "Innovation Roadmap", "Cloud Migration"],
     icon: ShoppingCart,
     gradFrom: "#0c0a2e", gradMid: "#1a1660", gradTo: "#2a228a",
@@ -444,7 +444,7 @@ export default function CaseStudiesSection() {
             <p style={{ fontSize: isMobile ? 14 : 15.5, color: "#64748b", lineHeight: 1.75,
               maxWidth: 540, margin: 0 }}>
               Real enterprise transformations. Real outcomes. Each engagement represents a mandate to solve
-              something genuinely hard — at scale, under pressure, with results that stick.
+              something genuinely hard - at scale, under pressure, with results that stick.
             </p>
           </motion.div>
 
