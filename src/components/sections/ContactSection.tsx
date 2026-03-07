@@ -1,229 +1,450 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { Send, MapPin, Clock, Mail, Phone } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { motion, useInView, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { Send, MapPin, Clock, Mail, Linkedin, Twitter, BookOpen, CheckCircle, ExternalLink } from "lucide-react";
 
-const ContactSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+// ── TRUE floating label: inside field at rest, rises ABOVE the field border on focus ──
+function FloatField({ label, type = "text", textarea = false, delay = 0, inView }: {
+  label: string; type?: string; textarea?: boolean; delay?: number; inView: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+  const [value,   setValue  ] = useState("");
+  const lifted = focused || value.length > 0;
 
-  const formFields = [
-    { name: "name", label: "Your Name", type: "text", placeholder: "John Doe" },
-    { name: "email", label: "Email Address", type: "email", placeholder: "john@example.com" },
+  const fieldStyle: React.CSSProperties = {
+    width: "100%",
+    padding: lifted ? "18px 14px 6px" : "12px 14px",
+    borderRadius: 12,
+    border: focused ? "1.5px solid #5b6ef7" : "1px solid rgba(91,110,247,0.2)",
+    background: focused ? "#fff" : "#f4f5ff",
+    fontSize: 13.5,
+    color: "#1a1f4e",
+    outline: "none",
+    fontFamily: "'Inter', sans-serif",
+    boxShadow: focused ? "0 0 0 4px rgba(91,110,247,0.1)" : "none",
+    transition: "all 0.22s",
+    boxSizing: "border-box" as const,
+    resize: "none" as const,
+    lineHeight: 1.6,
+    display: "block",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      style={{ position: "relative" }}
+    >
+      {/* Label — starts centered in field, animates to above the top border */}
+      <motion.label
+        animate={lifted ? {
+          top: -10,
+          fontSize: "10px",
+          color: focused ? "#5b6ef7" : "#8090c0",
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          background: focused ? "#fff" : "#f0f2ff",
+          paddingLeft: 6,
+          paddingRight: 6,
+        } : {
+          top: textarea ? 14 : "50%",
+          fontSize: "13.5px",
+          color: "#a0acc8",
+          fontWeight: 400,
+          letterSpacing: "0",
+          background: "transparent",
+          paddingLeft: 0,
+          paddingRight: 0,
+        }}
+        style={{
+          position: "absolute",
+          left: 12,
+          transform: lifted ? "none" : "translateY(-50%)",
+          pointerEvents: "none",
+          zIndex: 3,
+          fontFamily: "'Bricolage Grotesque', sans-serif",
+          textTransform: lifted ? "uppercase" as const : "none" as const,
+          borderRadius: 4,
+          whiteSpace: "nowrap" as const,
+          transition: "all 0.2s ease",
+          lineHeight: 1,
+        }}
+      >
+        {label}
+      </motion.label>
+
+      {textarea ? (
+        <textarea rows={4} value={value}
+          onChange={e => setValue(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={{ ...fieldStyle, minHeight: 110 }}
+        />
+      ) : (
+        <input type={type} value={value}
+          onChange={e => setValue(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={fieldStyle}
+        />
+      )}
+    </motion.div>
+  );
+}
+
+// ── Contact card ──────────────────────────────────────────────────────────────
+function ContactCard({ icon: Icon, label, value, href, accent, delay, inView }: {
+  icon: any; label: string; value: string; href: string;
+  accent: string; delay: number; inView: boolean;
+}) {
+  const [hov, setHov] = useState(false);
+  return (
+    <motion.a
+      href={href}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel="noreferrer"
+      initial={{ opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      whileHover={{ y: -5, scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+      style={{
+        display: "flex", alignItems: "center", gap: 12,
+        padding: "15px 16px", borderRadius: 16,
+        background: hov ? `${accent}08` : "white",
+        border: hov ? `1.5px solid ${accent}45` : "1.5px solid rgba(91,110,247,0.1)",
+        textDecoration: "none",
+        boxShadow: hov ? `0 10px 32px ${accent}22, 0 0 0 3px ${accent}09` : "0 2px 10px rgba(91,110,247,0.07)",
+        transition: "background 0.2s, border-color 0.2s, box-shadow 0.2s",
+        position: "relative", overflow: "hidden",
+      }}
+    >
+      {/* Shimmer sweep on hover */}
+      <AnimatePresence>
+        {hov && (
+          <motion.div key="sw"
+            initial={{ x: "-100%", opacity: 0.8 }}
+            animate={{ x: "220%", opacity: 0.8 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+            style={{ position:"absolute", top:0, left:0, width:"55%", height:"100%",
+              background:`linear-gradient(90deg,transparent,${accent}16,transparent)`,
+              pointerEvents:"none" }}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        animate={{ scale: hov ? 1.15 : 1, rotate: hov ? -8 : 0 }}
+        transition={{ type: "spring", stiffness: 380, damping: 20 }}
+        style={{ width:42, height:42, borderRadius:12, flexShrink:0,
+          background:`linear-gradient(135deg,${accent}22,${accent}0a)`,
+          border:`1px solid ${accent}28`,
+          display:"flex", alignItems:"center", justifyContent:"center" }}
+      >
+        <Icon size={18} style={{ color: accent }} />
+      </motion.div>
+
+      <div style={{ minWidth:0, flex:1 }}>
+        <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.09em",
+          textTransform:"uppercase" as const, color:"#9aa5c8",
+          fontFamily:"'Bricolage Grotesque',sans-serif", marginBottom:3 }}>{label}</div>
+        <div style={{ fontSize:13, fontWeight:600, color: hov ? accent : "#2d3a6b",
+          overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap",
+          fontFamily:"'Bricolage Grotesque',sans-serif", transition:"color 0.2s" }}>{value}</div>
+      </div>
+
+      <motion.div animate={{ x: hov ? 4 : 0, opacity: hov ? 1 : 0.2 }} transition={{ duration:0.18 }} style={{ flexShrink:0 }}>
+        <ExternalLink size={13} style={{ color: accent }} />
+      </motion.div>
+    </motion.a>
+  );
+}
+
+// ── Confetti particle ─────────────────────────────────────────────────────────
+function Burst({ x, y }: { x: number; y: number }) {
+  const colors = ["#5b6ef7","#f472b6","#fbbf24","#34d399","#818cf8","#f97316"];
+  return (
+    <>
+      {Array.from({ length: 20 }).map((_, i) => {
+        const angle = (i / 20) * Math.PI * 2;
+        const r = 55 + Math.random() * 70;
+        return (
+          <motion.div key={i}
+            initial={{ x, y, scale: 1, opacity: 1 }}
+            animate={{ x: x + Math.cos(angle)*r, y: y + Math.sin(angle)*r, scale: 0, opacity: 0 }}
+            transition={{ duration: 0.6 + Math.random()*0.4, ease:"easeOut" }}
+            style={{ position:"fixed", top:0, left:0, width:7, height:7,
+              borderRadius: i % 3 === 0 ? 2 : "50%",
+              background: colors[i % colors.length],
+              pointerEvents:"none", zIndex:9999, transform:"translate(-50%,-50%)" }}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+export default function ContactSection() {
+  const ref    = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [sent,   setSent  ] = useState(false);
+  const [burst,  setBurst ] = useState<{x:number,y:number}|null>(null);
+  const [imgHov, setImgHov] = useState(false);
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  // Subtle card tilt on mouse move
+  const mx = useMotionValue(0), my = useMotionValue(0);
+  const rx  = useSpring(useTransform(my, [-0.5,0.5],[2.5,-2.5]), {stiffness:180, damping:28});
+  const ry  = useSpring(useTransform(mx, [-0.5,0.5],[-2.5,2.5]), {stiffness:180, damping:28});
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX-r.left)/r.width  - 0.5);
+    my.set((e.clientY-r.top )/r.height - 0.5);
+  };
+  const onLeave = () => { mx.set(0); my.set(0); };
+
+  const handleSend = () => {
+    if (btnRef.current) {
+      const r = btnRef.current.getBoundingClientRect();
+      setBurst({ x: r.left + r.width/2, y: r.top + r.height/2 });
+      setTimeout(() => setBurst(null), 1100);
+    }
+    setSent(true);
+  };
+
+  const socials = [
+    { icon:Mail,     label:"Email",    value:"contact@hellouchit.com", href:"mailto:contact@hellouchit.com",    accent:"#5b6ef7" },
+    { icon:Linkedin, label:"LinkedIn", value:"in/uchitvyas",           href:"https://linkedin.com/in/uchitvyas",accent:"#0ea5e9" },
+    { icon:Twitter,  label:"Twitter",  value:"@uchit_vyas",            href:"https://twitter.com/uchit_vyas",  accent:"#6366f1" },
+    { icon:BookOpen, label:"Medium",   value:"@uchit86",               href:"https://medium.com/@uchit86",     accent:"#059669" },
   ];
 
   return (
-    <section id="contact" className="py-24 bg-gradient-to-b from-secondary/30 to-transparent relative">
-      <div className="container mx-auto px-6" ref={ref}>
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <span className="text-primary font-medium text-sm uppercase tracking-wider">
-            Get In Touch
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2 gradient-text">
-            Contact Me
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Have a project in mind? Let's discuss how we can work together.
-          </p>
-        </motion.div>
+    <section id="contact" ref={ref} style={{
+      position:"relative", fontFamily:"'Inter',system-ui,sans-serif",
+      background:"linear-gradient(145deg,#eaedff 0%,#dde1ff 45%,#e6e9ff 100%)",
+      padding:"88px 32px 104px", overflow:"hidden",
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@300;400;500;600;700&display=swap');
+        textarea{resize:none;}
+        input:-webkit-autofill{-webkit-box-shadow:0 0 0 100px #f4f5ff inset!important;}
+      `}</style>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="glass-card p-8 rounded-3xl"
-          >
-            <h3 className="text-xl font-semibold text-foreground mb-6">
-              Send a Message
-            </h3>
+      {/* Burst */}
+      {burst && <Burst x={burst.x} y={burst.y} />}
 
-            <form className="space-y-6">
-              {formFields.map((field, index) => (
-                <motion.div
-                  key={field.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="space-y-2"
-                >
-                  <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
-                    {field.label}
-                  </Label>
-                  <Input
-                    id={field.name}
-                    type={field.type}
-                    placeholder={field.placeholder}
-                    className="rounded-xl border-border/50 bg-secondary/30 focus:bg-white transition-colors"
-                  />
-                </motion.div>
-              ))}
+      {/* ── Crisp animated blobs ── */}
+      {[
+        {w:420,h:420,s:{top:-100,left:-100}, rx:"62% 38% 55% 45%/48% 58% 42% 52%", c:"rgba(91,110,247,0.2)",  dur:10,dl:0  },
+        {w:370,h:370,s:{bottom:-80,right:-80},rx:"45% 55% 38% 62%/55% 42% 58% 45%", c:"rgba(91,110,247,0.16)", dur:13,dl:1  },
+        {w:200,h:200,s:{top:"28%",right:"-3%"},rx:"50%",                             c:"rgba(110,126,255,0.14)",dur:7, dl:2  },
+        {w:110,h:110,s:{top:"10%",right:"17%"},rx:"50%",                             c:"rgba(91,110,247,0.11)", dur:6, dl:0.5},
+        {w:130,h:130,s:{bottom:"11%",left:"5%"},rx:"60% 40% 50%/50% 60% 40%",       c:"rgba(130,100,255,0.1)", dur:8, dl:3  },
+        {w:75, h:75, s:{top:"55%",left:"2%"},  rx:"50%",                             c:"rgba(160,120,255,0.1)", dur:5, dl:1.5},
+      ].map((b,i)=>(
+        <motion.div key={i}
+          animate={{scale:[1,1.06,1],rotate:[0,i%2===0?4:-4,0]}}
+          transition={{duration:b.dur,repeat:Infinity,ease:"easeInOut",delay:b.dl}}
+          style={{position:"absolute",...b.s,width:b.w,height:b.h,borderRadius:b.rx,background:b.c,pointerEvents:"none"}}
+        />
+      ))}
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.5 }}
-                className="space-y-2"
-              >
-                <Label htmlFor="message" className="text-sm font-medium text-foreground">
-                  Your Message
-                </Label>
-                <Textarea
-                  id="message"
-                  placeholder="Tell me about your project..."
-                  rows={5}
-                  className="rounded-xl border-border/50 bg-secondary/30 focus:bg-white transition-colors resize-none"
-                />
-              </motion.div>
+      {/* ── Card ── */}
+      <motion.div
+        initial={{opacity:0,y:32,scale:0.97}}
+        animate={inView?{opacity:1,y:0,scale:1}:{}}
+        transition={{duration:0.72,ease:[0.16,1,0.3,1]}}
+        onMouseMove={onMove} onMouseLeave={onLeave}
+        style={{
+          maxWidth:980, margin:"0 auto",
+          background:"rgba(255,255,255,0.97)",
+          borderRadius:30,
+          boxShadow:"0 28px 72px rgba(60,80,200,0.16),0 4px 16px rgba(60,80,200,0.08)",
+          overflow:"visible",          // allow labels to pop above border
+          display:"grid", gridTemplateColumns:"1fr 1fr",
+          position:"relative", zIndex:1,
+          rotateX:rx, rotateY:ry,
+          transformStyle:"preserve-3d" as const,
+        }}
+      >
+        {/* overflow:hidden clipped on inner panels, not outer */}
+        <div style={{borderRadius:"30px 0 0 30px", overflow:"hidden"}}>
 
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.6 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="button"
-                className="w-full btn-pill-primary flex items-center justify-center gap-2"
-              >
-                Send Message
-                <Send size={18} />
-              </motion.button>
-            </form>
-          </motion.div>
+        {/* ══ LEFT: FORM ══════════════════════════════════════════════════ */}
+        <div style={{padding:"52px 44px 52px 48px"}}>
 
-          {/* Meet Me Card */}
-          <motion.div
-            id="meet"
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="glass-card p-8 rounded-3xl flex flex-col"
-          >
-            <h3 className="text-xl font-semibold text-foreground mb-6">
-              Meet Me
-            </h3>
-
-            {/* Map Placeholder */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.5 }}
-              className="flex-1 rounded-2xl bg-gradient-to-br from-primary/10 via-secondary to-primary/5 min-h-[200px] flex items-center justify-center mb-6 relative overflow-hidden"
-            >
-              {/* Abstract map representation */}
-              <div className="absolute inset-0">
-                <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-primary rounded-full animate-pulse" />
-                <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-primary rounded-full" />
-                <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-primary/50 rounded-full animate-pulse" />
-                
-                {/* Grid lines */}
-                <div className="absolute inset-0 opacity-10">
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={`h-${i}`}
-                      className="absolute left-0 right-0 border-t border-primary"
-                      style={{ top: `${(i + 1) * 20}%` }}
-                    />
-                  ))}
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={`v-${i}`}
-                      className="absolute top-0 bottom-0 border-l border-primary"
-                      style={{ left: `${(i + 1) * 20}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="relative z-10 p-4 bg-white rounded-full shadow-lg"
-              >
-                <MapPin className="w-8 h-8 text-primary" />
-              </motion.div>
-            </motion.div>
-
-            {/* Contact Info */}
-            <div className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.6 }}
-                className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50"
-              >
-                <div className="p-3 rounded-full bg-primary/10">
-                  <MapPin className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">Location</p>
-                  <p className="text-sm text-muted-foreground">Melbourne, VIC</p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.7 }}
-                className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50"
-              >
-                <div className="p-3 rounded-full bg-primary/10">
-                  <Clock className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">Availability</p>
-                  <p className="text-sm text-muted-foreground">Mon - Fri, 9AM - 6PM PST</p>
-                </div>
-              </motion.div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <motion.a
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.8 }}
-                  whileHover={{ scale: 1.02 }}
-                  href="mailto:hello@example.com"
-                  className="flex items-center gap-2 p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors"
-                >
-                  <Mail className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-medium text-foreground">Email</span>
-                </motion.a>
-
-                <motion.a
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.85 }}
-                  whileHover={{ scale: 1.02 }}
-                  href="tel:+1234567890"
-                  className="flex items-center gap-2 p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors"
-                >
-                  <Phone className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-medium text-foreground">Call</span>
-                </motion.a>
-              </div>
+          <motion.div initial={{opacity:0,y:14}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.16,duration:0.5}}>
+            {/* Eyebrow */}
+            <div style={{display:"inline-flex",alignItems:"center",gap:7,padding:"5px 14px",borderRadius:100,background:"rgba(91,110,247,0.09)",border:"1px solid rgba(91,110,247,0.18)",marginBottom:18}}>
+              <motion.span animate={{scale:[1,1.7,1],opacity:[1,0.4,1]}} transition={{duration:2,repeat:Infinity,ease:"easeInOut"}} style={{width:5,height:5,borderRadius:"50%",background:"#5b6ef7",display:"block"}} />
+              <span style={{fontSize:10.5,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase" as const,color:"#5b6ef7",fontFamily:"'Bricolage Grotesque',sans-serif"}}>Get In Touch</span>
             </div>
-          </motion.div>
-        </div>
-      </div>
+<br />
+            {/* Headline + animated underline */}
+            <div style={{position:"relative",display:"inline-block",marginBottom:10}}>
+              <h2 style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:36,fontWeight:800,letterSpacing:"-0.03em",color:"#1a1f4e",margin:0}}>
+                Let's talk.
+              </h2>
+              <motion.div initial={{scaleX:0}} animate={inView?{scaleX:1}:{}} transition={{delay:0.65,duration:0.55,ease:[0.16,1,0.3,1]}}
+                style={{position:"absolute",bottom:-3,left:0,right:0,height:3,borderRadius:2,background:"linear-gradient(90deg,#5b6ef7,#818cf8)",transformOrigin:"left"}} />
+            </div>
 
-      {/* Wave Separator */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path d="M0 30C360 50 720 10 1080 30C1260 40 1380 35 1440 30V60H0V30Z" fill="hsl(217 91% 95%)" />
-        </svg>
-      </div>
+            <p style={{fontSize:14,color:"#7a88b4",lineHeight:1.82,margin:"14px 0 32px",maxWidth:295}}>
+              Speaking engagement, consulting opportunity, or mentoring conversation — I respond to every message within 24 hours.
+            </p>
+          </motion.div>
+
+          <AnimatePresence mode="wait">
+            {sent ? (
+              <motion.div key="ok"
+                initial={{opacity:0,scale:0.85,y:16}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0}}
+                transition={{type:"spring",stiffness:280,damping:22}}
+                style={{textAlign:"center",padding:"24px 0"}}
+              >
+                <motion.div initial={{scale:0,rotate:-30}} animate={{scale:1,rotate:0}}
+                  transition={{type:"spring",stiffness:360,damping:16,delay:0.1}}
+                  style={{width:72,height:72,borderRadius:"50%",background:"linear-gradient(135deg,#dbeafe,#ede9fe)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 18px",boxShadow:"0 8px 32px rgba(91,110,247,0.22)"}}>
+                  <CheckCircle size={32} style={{color:"#5b6ef7"}} />
+                </motion.div>
+                <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} transition={{delay:0.3}}>
+                  <div style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:22,fontWeight:800,color:"#1a1f4e",marginBottom:8}}>Message sent! 🎉</div>
+                  <div style={{fontSize:14,color:"#7a88b4"}}>Thanks — I'll reply within 24 hours.</div>
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div key="form" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} style={{display:"flex",flexDirection:"column",gap:20}}>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+                  <FloatField label="Your Name"     delay={0.28} inView={inView} />
+                  <FloatField label="Email Address" delay={0.33} inView={inView} type="email" />
+                </div>
+                <FloatField label="Subject"       delay={0.37} inView={inView} />
+                <FloatField label="Your Message"  delay={0.41} inView={inView} textarea />
+
+                <motion.div initial={{opacity:0,y:8}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.47}}>
+                  <motion.button ref={btnRef} onClick={handleSend}
+                    whileHover={{scale:1.04,boxShadow:"0 16px 44px rgba(91,110,247,0.46)"}}
+                    whileTap={{scale:0.95}}
+                    style={{display:"inline-flex",alignItems:"center",gap:10,padding:"14px 32px",borderRadius:100,background:"linear-gradient(135deg,#3a52d9,#5b6ef7)",color:"white",fontSize:14,fontWeight:700,fontFamily:"'Bricolage Grotesque',sans-serif",border:"none",cursor:"pointer",boxShadow:"0 8px 28px rgba(91,110,247,0.3),inset 0 1px 0 rgba(255,255,255,0.2)"}}>
+                    Send Message
+                    <motion.span animate={{x:[0,4,0],rotate:[0,12,0]}} transition={{duration:1.6,repeat:Infinity,ease:"easeInOut"}}>
+                      <Send size={15} />
+                    </motion.span>
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        </div>{/* end left overflow wrapper */}
+
+        {/* ══ RIGHT: IMAGE + DETAILS ═══════════════════════════════════════ */}
+        <div style={{background:"linear-gradient(155deg,#f5f6ff 0%,#eceeff 100%)",borderLeft:"1px solid rgba(91,110,247,0.08)",padding:"40px 36px 40px 32px",display:"flex",flexDirection:"column",gap:18,borderRadius:"0 30px 30px 0",overflow:"hidden"}}>
+
+          {/* Envelope illustration */}
+          <div
+            onMouseEnter={()=>setImgHov(true)}
+            onMouseLeave={()=>setImgHov(false)}
+            style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center",height:195,cursor:"pointer"}}
+          >
+            {/* Soft bg glow that expands on hover */}
+            <motion.div
+              animate={{scale: imgHov ? 1.3 : 1, opacity: imgHov ? 0.85 : 0.55}}
+              transition={{duration:0.4}}
+              style={{position:"absolute",width:170,height:170,borderRadius:"50%",background:"radial-gradient(circle,rgba(195,202,255,0.7) 0%,transparent 72%)"}}
+            />
+
+            {/* Scatter dots — go wilder on imgHov */}
+            {[
+              {top:"5%", left:"10%",  s:9, c:"#f472b6",dl:0  },
+              {top:"3%", right:"12%", s:7, c:"#fbbf24",dl:0.5 },
+              {top:"52%",left:"3%",   s:6, c:"#818cf8",dl:0.9 },
+              {bottom:"8%", right:"6%",  s:8,c:"#34d399",dl:0.3},
+              {top:"28%",right:"4%",  s:5, c:"#60a5fa",dl:1.1 },
+              {bottom:"22%",left:"13%",s:5,c:"#f472b6",dl:0.7 },
+              {top:"18%", left:"42%", s:4, c:"#a78bfa",dl:1.3 },
+              {bottom:"36%",right:"22%",s:4,c:"#fbbf24",dl:0.2},
+            ].map((d,i)=>(
+              <motion.div key={i}
+                animate={{
+                  y: imgHov ? [0,-14,0] : [0,-6,0],
+                  scale: imgHov ? [1,1.5,1] : [1,1.15,1],
+                }}
+                transition={{duration: imgHov ? 1.2+i*0.15 : 2.4+i*0.3, repeat:Infinity, ease:"easeInOut", delay:d.dl}}
+                style={{position:"absolute",...(d as any),width:d.s,height:d.s,borderRadius:"50%",background:d.c,zIndex:2}}
+              />
+            ))}
+
+            {/* ×  + accents spin on hover */}
+            {[{top:"16%",right:"10%",c:"+"},{bottom:"26%",left:"6%",c:"+"},{top:"66%",right:"18%",c:"×"},{top:"8%",left:"30%",c:"×"}].map((p,i)=>(
+              <motion.div key={i}
+                animate={{rotate: imgHov ? 360 : 0, scale: imgHov ? 1.4 : 1}}
+                transition={{duration: imgHov ? 1.5 : 0.3, repeat: imgHov ? Infinity : 0, ease:"linear"}}
+                style={{position:"absolute",top:p.top,right:(p as any).right,bottom:(p as any).bottom,left:(p as any).left,fontSize:14,color:"rgba(91,110,247,0.4)",zIndex:2,fontWeight:300}}
+              >{p.c}</motion.div>
+            ))}
+
+            {/* The image — grows on hover */}
+            <motion.div
+              animate={{
+                y: [0, -10, 0],
+                scale: imgHov ? 1.18 : 1,
+              }}
+              transition={{
+                y:     {duration:4, repeat:Infinity, ease:"easeInOut"},
+                scale: {duration:0.35, ease:[0.16,1,0.3,1]},
+              }}
+              style={{position:"relative",zIndex:3}}
+            >
+              <img
+                src="/images/hd_envelope_icon.png"
+                alt="Contact Uchit Vyas"
+                style={{
+                  width: imgHov ? 205 : 185,
+                  height: imgHov ? 168 : 152,
+                  objectFit:"contain",
+                  filter: imgHov
+                    ? "drop-shadow(0 22px 48px rgba(91,110,247,0.42))"
+                    : "drop-shadow(0 12px 28px rgba(91,110,247,0.2))",
+                  display:"block",
+                  transition:"all 0.35s cubic-bezier(0.16,1,0.3,1)",
+                }}
+              />
+            </motion.div>
+          </div>
+
+          {/* Location + time */}
+          <div style={{display:"flex",gap:9}}>
+            {[{icon:MapPin,label:"Melbourne, VIC, AU"},{icon:Clock,label:"Mon–Fri · 9AM–6PM AEST"}].map((row,i)=>{
+              const Icon = row.icon;
+              return (
+                <motion.div key={i}
+                  initial={{opacity:0,y:8}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.44+i*0.07}}
+                  whileHover={{y:-3,boxShadow:"0 8px 24px rgba(91,110,247,0.14)"}}
+                  style={{flex:1,display:"flex",alignItems:"center",gap:8,padding:"11px 12px",borderRadius:12,background:"white",border:"1px solid rgba(91,110,247,0.12)",boxShadow:"0 2px 8px rgba(91,110,247,0.07)",transition:"box-shadow 0.2s",cursor:"default"}}
+                >
+                  <motion.span animate={{rotate:[0,12,0]}} transition={{duration:4,repeat:Infinity,ease:"easeInOut",delay:i*1.8}}>
+                    <Icon size={14} style={{color:"#5b6ef7"}} />
+                  </motion.span>
+                  <span style={{fontSize:11.5,color:"#4a5080",fontWeight:500,lineHeight:1.4}}>{row.label}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Social cards 2×2 */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {socials.map((s,i)=>(
+              <ContactCard key={s.label} {...s} delay={0.5+i*0.07} inView={inView} />
+            ))}
+          </div>
+
+        </div>
+      </motion.div>
     </section>
   );
-};
-
-export default ContactSection;
+}

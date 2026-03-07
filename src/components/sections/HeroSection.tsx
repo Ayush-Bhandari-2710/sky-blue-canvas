@@ -16,10 +16,10 @@ const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 const badges = [
-  { icon: Star,        label: "100% Client Satisfaction", id: "top"    },
-  { icon: PenLine,     label: "An Author",                id: "right"  },
-  { icon: Cloud,       label: "Cloud Fanatic",            id: "left"   },
-  { icon: ShieldCheck, label: "SRE Practitioner",         id: "bottom" },
+  { icon: Star,        label: "Top 50 DevSecOps Globally", id: "top"    },
+  { icon: PenLine,     label: "6× Published Author",        id: "right"  },
+  { icon: Cloud,       label: "Multi-Cloud Architect",      id: "left"   },
+  { icon: ShieldCheck, label: "SRE Practitioner",           id: "bottom" },
 ];
 
 // Read screen size synchronously — no useEffect needed
@@ -290,7 +290,7 @@ const HeroSection = () => {
               <div className="chip-avail" style={{ margin: isMobile ? "0 auto 0" : undefined }}>
                 <div className="availability-dot" />
                 <Sparkles size={10} />
-                Available for Projects
+                Available for Consulting
               </div>
             </motion.div>
 
@@ -299,7 +299,7 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.08 }}
               style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(60,80,160,0.38)", marginBottom: 12 }}
             >
-              Designer & Developer
+              Enterprise Architect & Transformation Leader
             </motion.p>
 
             <motion.h1
@@ -334,8 +334,9 @@ const HeroSection = () => {
                 alignSelf: isMobile ? "center" : "flex-start",
               }}
             >
-              A passionate designer and developer crafting beautiful digital
-              experiences that connect brands with their audience - with precision, taste, and purpose.
+              I turn complex technology change into measurable business outcomes —
+              from C-suite strategy to live platform. 15+ years across banking,
+              retail, and Fortune 500 enterprises.
             </motion.p>
 
             <motion.div
@@ -345,10 +346,10 @@ const HeroSection = () => {
               style={{ display: "flex", gap: 10, marginBottom: 36, flexWrap: "wrap" }}
             >
               <motion.button className="btn-primary" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                View My Work <ArrowRight size={14} />
+                View Case Studies <ArrowRight size={14} />
               </motion.button>
               <motion.button className="btn-ghost" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                Get In Touch
+                Book a Strategy Call
               </motion.button>
             </motion.div>
 
@@ -359,9 +360,9 @@ const HeroSection = () => {
               style={{ display: "flex", gap: 10, flexWrap: isMobile ? "wrap" : "nowrap" }}
             >
               {[
-                { num: "5+",   label: "Years Experience"   },
-                { num: "60+",  label: "Projects Delivered" },
-                { num: "100%", label: "Satisfaction Rate"  },
+                { num: "15+",  label: "Years Enterprise Delivery" },
+                { num: "30+",  label: "Global Conference Talks"   },
+                { num: "6",    label: "Published Books & Patents" },
               ].map((stat, i) => (
                 <div key={i} className="stat-card" style={{ padding: isMobile ? "11px 14px" : "14px 18px" }}>
                   <span style={{ fontFamily: "'Playfair Display', serif", fontSize: isMobile ? 17 : 22, fontWeight: 700, color: "#4a6df0", lineHeight: 1 }}>
