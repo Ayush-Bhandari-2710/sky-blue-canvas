@@ -24,7 +24,7 @@ const cases = [
   {
     id: "02",
     category: "Banking · Payment Infrastructure · Multi-Region",
-    title: "Multi-Region Payment Platform - Delivered in 3 Months",
+    title: "Multi-Region Payment Platform — Delivered in 3 Months",
     subtitle: "Delivered in 3 Months",
     cardTitle: "Multi-Region Banking Payment Platform",
     desc: "Designed and shipped a cross-region payment platform under a compressed mandate. Launched on time with zero critical production defects across all regions.",
@@ -42,7 +42,7 @@ const cases = [
     title: "High-Speed Digital Lending Platform at Scale",
     subtitle: "Platform at Scale",
     cardTitle: "High-Speed Digital Lending",
-    desc: "Replaced legacy approval workflows with event-driven microservices - turning weeks of credit decisioning into seconds without compromising compliance or audit trails.",
+    desc: "Replaced legacy approval workflows with event-driven microservices — turning weeks of credit decisioning into seconds without compromising compliance or audit trails.",
     tags: ["Microservices", "Event-Driven", "FinTech", "Kubernetes"],
     icon: Zap,
     gradFrom: "#080e28", gradMid: "#0d1f4a", gradTo: "#122868",
@@ -72,7 +72,7 @@ const cases = [
     title: "Retail Platform Modernisation & Innovation Roadmap",
     subtitle: "Innovation Roadmap",
     cardTitle: "Retail Platform Modernisation",
-    desc: "Monolith to composable API-first architecture. The phased roadmap connected technology investment to commercial outcomes - faster time-to-market, reduced cost, new revenue-enabling capabilities.",
+    desc: "Monolith to composable API-first architecture. The phased roadmap connected technology investment to commercial outcomes — faster time-to-market, reduced cost, new revenue-enabling capabilities.",
     tags: ["API-First", "Modernisation", "Innovation Roadmap", "Cloud Migration"],
     icon: ShoppingCart,
     gradFrom: "#0c0a2e", gradMid: "#1a1660", gradTo: "#2a228a",
@@ -129,7 +129,7 @@ function CardShape({ shape, color }: { shape: string; color: string }) {
 }
 
 // ── Card header ────────────────────────────────────────────────────────────────
-function CaseCardHeader({ c, hov, headerHeight }: { c: typeof cases[0]; hov: boolean; headerHeight: number }) {
+function CaseCardHeader({ c, hov, headerHeight, isMobile }: { c: typeof cases[0]; hov: boolean; headerHeight: number; isMobile: boolean }) {
   const Icon = c.icon;
   return (
     <div style={{
@@ -151,7 +151,7 @@ function CaseCardHeader({ c, hov, headerHeight }: { c: typeof cases[0]; hov: boo
           padding: "2px 9px", borderRadius: 100 }}>
           {c.id}
         </div>
-        <motion.div animate={{ opacity: hov ? 1 : 0, scale: hov ? 1 : 0.65 }} transition={{ duration: 0.2 }}
+        <motion.div animate={{ opacity: isMobile ? 1 : hov ? 1 : 0, scale: isMobile ? 1 : hov ? 1 : 0.65 }} transition={{ duration: 0.2 }}
           style={{ width: 26, height: 26, borderRadius: "50%", background: c.accent,
             display: "flex", alignItems: "center", justifyContent: "center",
             boxShadow: `0 4px 12px ${c.accent}55` }}>
@@ -244,7 +244,7 @@ function CaseCard({
         style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, zIndex: 10,
           background: `linear-gradient(90deg,${c.accent},${c.accent}55)`, transformOrigin: "left" }} />
 
-      <CaseCardHeader c={c} hov={hov} headerHeight={headerHeight} />
+      <CaseCardHeader c={c} hov={hov} headerHeight={headerHeight} isMobile={isMobile} />
 
       <div style={{ padding: isMobile ? "16px 16px 20px" : "18px 20px 22px", flex: 1,
         display: "flex", flexDirection: "column" as const }}>
@@ -437,7 +437,7 @@ export default function CaseStudiesSection() {
             <p style={{ fontSize: isMobile ? 14 : 15.5, color: "#64748b", lineHeight: 1.75,
               maxWidth: 540, margin: 0 }}>
               Real enterprise transformations. Real outcomes. Each engagement represents a mandate to solve
-              something genuinely hard - at scale, under pressure, with results that stick.
+              something genuinely hard — at scale, under pressure, with results that stick.
             </p>
           </motion.div>
 
